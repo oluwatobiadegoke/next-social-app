@@ -27,3 +27,7 @@
 .authButton {
   @apply bg-indigo-500 text-white px-12 py-4 mt-5 border rounded-full hover:bg-black-400 transition-all duration-500 text-xl font-bold;
 }
+
+.main {
+  height: calc(100vh - 64px);
+}

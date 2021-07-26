@@ -1,17 +1,19 @@
 import { Fragment } from "react";
 import { useSession } from "next-auth/client";
 
-import Sidemenu from "./Sidemenu";
+import Sidemenu from "./sidemenu/Sidemenu";
 import Topbar from "./navbar/Topbar";
+import Followers from "./followers/Followers";
 
 const Layout = (props) => {
   const [session] = useSession();
   return (
     <Fragment>
       {session && <Topbar />}
-      <main>
+      <main className="main grid grid-cols-7">
         {session && <Sidemenu />}
-        {props.children}
+        <section className="col-span-3">{props.children}</section>
+        {session && <Followers />}
       </main>
     </Fragment>
   );
