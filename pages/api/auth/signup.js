@@ -5,9 +5,10 @@ export default async function helper(req, res) {
   if (req.method !== "POST") {
     return res.status(405).send("Method Not Allowed");
   }
-  const { email, password, cpassword } = req.body;
+  const { name, email, password, cpassword } = req.body;
 
   if (
+    !name ||
     !email ||
     !email.includes("@") ||
     !password ||

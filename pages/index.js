@@ -14,19 +14,17 @@ export default function Home() {
   return (
     <main className="font-body h-screen w-full overflow-hidden flex bg-test-100">
       <section className="flex-1 p-8 bg-white">
-        <p className="text-right text-sm font-bold">
+        <p className="text-right text-sm font-bold text-indigo-500">
           {isMember ? "Not" : "Already"} a member?{" "}
-          <button className="text-light-600" onClick={toggleMember}>
+          <button className="text-light-500" onClick={toggleMember}>
             Sign {isMember ? "up" : "in"}
           </button>
         </p>
         <>{isMember ? <Signin /> : <Signup />}</>
       </section>
 
-      <section className="bg-xpress bg-test-100 flex-1 bg-no-repeat bg-cover bg-center p-8">
-        <p className="text-black-500 font-extrabold text-6xl">
-          X<span className="text-light-400">.PRESS</span>
-        </p>
+      <section className="bg-indigo-500 bg-test-100 flex-1 p-8 flex items-center justify-center">
+        <p className="text-light-400 font-extrabold text-9xl">X.PRESS</p>
       </section>
     </main>
   );

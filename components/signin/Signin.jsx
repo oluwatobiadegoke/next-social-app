@@ -1,4 +1,19 @@
+import React, { useRef } from "react";
+import { signIn } from "next-auth/client";
+
 const Signin = () => {
+  const emailRef = useRef();
+  const passwordRef = useRef();
+
+  const handleSubmit = async (e, credential) => {
+    e.preventDefault();
+    signIn(credential, {
+      callbackUrl: "http://localhost:3000/user/home",
+      email: emailRef.current.value,
+      password: passwordRef.current.value,
+    });
+  };
+
   return (
     <section className="w-full flex justify-center mt-14">
       <div className="w-3/4 flex flex-col">
@@ -16,6 +31,7 @@ const Signin = () => {
               tabIndex="0"
               type="email"
               className="authInput"
+              ref={emailRef}
             />
           </div>
 
@@ -31,10 +47,16 @@ const Signin = () => {
               tabIndex="0"
               type="password"
               className="authInput"
+              ref={passwordRef}
             />
           </div>
           <div className="w-full flex justify-center">
-            <button className="authButton">Sign In</button>
+            <button
+              className="authButton"
+              onClick={(e) => handleSubmit(e, "credentials")}
+            >
+              Sign In
+            </button>
           </div>
         </form>
       </div>

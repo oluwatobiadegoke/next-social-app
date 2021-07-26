@@ -1,16 +1,20 @@
 import React, { useState } from "react";
+import { FcGoogle } from "react-icons/fc";
+import { signIn } from "next-auth/client";
 
 const Signup = () => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (email && password && confirmPassword) {
+    if (name && email && password && confirmPassword) {
       fetch("/api/signup", {
         method: "POST",
         body: JSON.stringify({
+          name,
           email,
           password,
           cpassword: confirmPassword,
@@ -33,6 +37,22 @@ const Signup = () => {
       <div className="w-3/4 flex flex-col">
         <h1 className="authLetter">Sign up</h1>
         <form className="mt-14 justify-center">
+          <div className="authContainer">
+            <div className="authLabelContainer">
+              <label htmlFor="Name" className="authLabel">
+                Name *
+              </label>
+            </div>
+            <input
+              id="Name"
+              autoComplete="false"
+              tabIndex="0"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="authInput"
+            />
+          </div>
           <div className="authContainer">
             <div className="authLabelContainer">
               <label htmlFor="email" className="authLabel">
@@ -89,6 +109,26 @@ const Signup = () => {
             </button>
           </div>
         </form>
+        <div className="w-full my-4 flex items-center justify-center">
+          <div className="bg-black-100 h-h w-full"></div>
+          <p className="text-center mx-4 my-1 text-black-100">or</p>
+          <div className="bg-black-100 h-h w-full"></div>
+        </div>
+        <div className="w-full">
+          <button
+            onClick={() =>
+              signIn("google", {
+                callbackUrl: "http://localhost:3000/api/auth/callback/google",
+              })
+            }
+            className="flex items-center justify-center border border-solid border-black-100 rounded px-5 py-3 m-auto"
+          >
+            <FcGoogle />
+            <span className="ml-2 text-xs font-extrabold text-black-200">
+              Sign up with Google
+            </span>
+          </button>
+        </div>
       </div>
     </section>
   );
