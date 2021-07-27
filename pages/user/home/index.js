@@ -1,15 +1,21 @@
 import { getSession, signOut } from "next-auth/client";
 
+import PostInput from "../../../components/home/postinput/PostInput";
+import Post from "../../../components/home/posts/Post";
+import Scroll from "../../../components/utils/Scroll";
+
 const index = () => {
   return (
-    <main>
-      <h1>This is the first contact.</h1>
-      <button
-        onClick={() => signOut({ callbackUrl: "http://localhost:3000/" })}
+    <Scroll>
+      <section
+        className="px-5 relative"
+        style={{ height: "calc(100vh - 64px)" }}
       >
-        sign out
-      </button>
-    </main>
+        <PostInput />
+        <div className="h-h w-full bg-black-100"></div>
+        <Post />
+      </section>
+    </Scroll>
   );
 };
 
