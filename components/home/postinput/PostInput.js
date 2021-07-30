@@ -1,12 +1,15 @@
 const PostInput = () => {
   return (
-    <div className="mb-4 w-full">
+    <div
+      className="mb-4 w-full sticky top-0 bg-indigo-800 p-2 rounded-lg bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-60 shadow-2xl"
+      style={{ backdropFilter: "blur(20px)" }}
+    >
       <form className="flex flex-col justify-center items-center mt-5">
-        <div className="w-full border-2 border-indigo-800 h-9 rounded">
+        <div className="w-full h-9 rounded">
           <input
             type="text"
             placeholder="Say something..."
-            className="w-full h-full px-4 rounded "
+            className="w-full h-full px-4 rounded border-none outline-none bg-indigo-700"
           />
         </div>
         {/* <div>

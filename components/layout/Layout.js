@@ -10,7 +10,7 @@ const Layout = (props) => {
   return (
     <Fragment>
       {session && <Topbar />}
-      <main className="main grid grid-cols-7 relative">
+      <main className="main grid grid-cols-7 relative bg-indigo-800">
         {session && <Sidemenu />}
         <section className="col-span-3 my-5">{props.children}</section>
         {session && <Followers />}

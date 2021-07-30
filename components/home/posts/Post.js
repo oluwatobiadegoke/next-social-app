@@ -33,8 +33,6 @@ const posts = [
 const Post = () => {
   return (
     <div>
-      <p className="font-base text-xl my-4">Posts</p>
-      <div className="h-h w-full bg-black-100"></div>
       <Posts posts={posts} />
     </div>
   );

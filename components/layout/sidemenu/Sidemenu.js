@@ -3,9 +3,9 @@ import PageLinks from "./PageLinks";
 
 const Sidemenu = () => {
   return (
-    <section className=" col-span-2 bg-white flex flex-col px-5">
+    <section className=" col-span-2 bg-indigo-800 flex flex-col px-5">
       <Bio />
-      <div className="h-h w-full bg-black-100 self-center"></div>
+      <div className="h-h w-full bg-indigo-700 self-center"></div>
       <PageLinks />
     </section>
   );

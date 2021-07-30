@@ -6,18 +6,18 @@ export const links = [
     id: 1,
     name: "Home",
     path: "/user/home",
-    icon: <FiHome className="text-indigo-800 text-xl" />,
+    icon: <FiHome className="text-black-100 text-xl" />,
   },
   {
     id: 2,
     name: "Profile",
     path: "/user/profile",
-    icon: <CgProfile className="text-indigo-800 text-xl" />,
+    icon: <CgProfile className="text-black-100 text-xl" />,
   },
   {
     id: 3,
     name: "Settings",
     path: "/user/settings",
-    icon: <FiSettings className="text-indigo-800 text-xl" />,
+    icon: <FiSettings className="text-black-100 text-xl" />,
   },
 ];

@@ -11,7 +11,7 @@ const PageLinks = () => {
           <li key={id} className="w-1/2 flex items-center justify-start my-2 ">
             {icon}
             <Link href={path}>
-              <a className="text-indigo-800 text-xl ml-2">{name}</a>
+              <a className="text-black-100 text-xl ml-2">{name}</a>
             </Link>
           </li>
         );
