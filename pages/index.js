@@ -7,6 +7,7 @@ import Signin from "../components/signin/Signin";
 
 export default function Home() {
   const [isMember, setIsMember] = useState(true);
+  const [isSignup, setIsSignup] = useState(false);
 
   const toggleMember = () => {
     setIsMember((isMember) => !isMember);
@@ -15,17 +16,23 @@ export default function Home() {
   return (
     <main className="font-body h-screen w-full overflow-hidden flex bg-test-100">
       <section className="flex-1 p-8 bg-white">
-        <p className="text-right text-sm font-bold text-indigo-500">
+        <p className="text-right text-sm font-bold text-indigo-800">
           {isMember ? "Not" : "Already"} a member?{" "}
-          <button className="text-light-500" onClick={toggleMember}>
+          <button className="text-green-500" onClick={toggleMember}>
             Sign {isMember ? "up" : "in"}
           </button>
         </p>
-        <>{isMember ? <Signin /> : <Signup />}</>
+        <>
+          {isMember ? (
+            <Signin isSignup={isSignup} setIsSignup={setIsSignup} />
+          ) : (
+            <Signup setIsMember={setIsMember} setIsSignup={setIsSignup} />
+          )}
+        </>
       </section>
 
-      <section className="bg-indigo-500 bg-test-100 flex-1 p-8 flex items-center justify-center">
-        <p className="text-light-400 font-extrabold text-9xl">X.PRESS</p>
+      <section className="bg-indigo-800 bg-test-100 flex-1 p-8 flex items-center justify-center">
+        <p className="text-black-100 font-extrabold text-9xl">X.PRESS</p>
       </section>
     </main>
   );

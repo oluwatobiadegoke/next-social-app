@@ -5,11 +5,11 @@
 @tailwind utilities;
 
 .authLetter {
-  @apply text-4xl text-indigo-500;
+  @apply text-4xl text-indigo-800;
 }
 
 .authContainer {
-  @apply border focus-within:border-indigo-500 focus-within:text-indigo-500 transition-all duration-500 relative rounded p-1 shadow my-6 h-14;
+  @apply border focus-within:border-indigo-800 focus-within:text-indigo-800 transition-all duration-500 relative rounded p-1 shadow my-6 h-14;
 }
 
 .authLabelContainer {
@@ -17,15 +17,15 @@
 }
 
 .authLabel {
-  @apply bg-white text-indigo-500 font-bold px-1;
+  @apply bg-white text-indigo-800 font-bold px-1;
 }
 
 .authInput {
-  @apply py-1 px-1 text-indigo-500 outline-none block h-full w-full;
+  @apply py-1 px-1 text-indigo-800 outline-none block h-full w-full;
 }
 
 .authButton {
-  @apply bg-indigo-500 text-white px-12 py-4 mt-5 border rounded-full hover:bg-black-400 transition-all duration-500 text-xl font-bold;
+  @apply bg-indigo-800 text-white px-12 py-4 mt-5 border rounded-full hover:bg-black-400 transition-all duration-500 text-xl font-bold flex items-center disabled:bg-indigo-700 disabled:cursor-not-allowed;
 }
 
 .main {

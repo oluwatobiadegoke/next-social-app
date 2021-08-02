@@ -1,6 +1,7 @@
 import { connectToDatabase } from "../../helpers/database";
 
 export default async function helper(req, res) {
+  // ====To POST  a single post==== //
   if (req.method === "POST") {
     const { content, poster, posterId } = req.body;
 
@@ -42,6 +43,8 @@ export default async function helper(req, res) {
       .status(200)
       .json({ response: "1", message: "Post created successfully" });
   }
+
+  // ====To GET  a single post==== //
 
   if (req.method === "GET") {
     const { _id } = req.body;

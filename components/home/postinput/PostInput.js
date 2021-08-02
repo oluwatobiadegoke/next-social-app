@@ -27,7 +27,7 @@ const PostInput = () => {
           </div>
         </div> */}
         <div className="w-full flex justify-end">
-          <button className="bg-green-500 text-white px-5 py-1 rounded mt-3">
+          <button className="bg-green-500 text-white px-5 py-1 rounded mt-3 text-base">
             Post
           </button>
         </div>

@@ -1,40 +1,77 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { signIn } from "next-auth/client";
 
-const Signup = () => {
+import Spinner from "../utils/Spinner";
+
+const Signup = ({ setIsMember }) => {
+  const [spinner, setSpinner] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [message, setMessage] = useState("");
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  useEffect(() => {
+    const timeOut = setTimeout(() => {
+      setIsError(false);
+    }, 3000);
+    return () => {
+      clearTimeout(timeOut);
+    };
+  }, [isError]);
+
   const handleSubmit = (e) => {
+    setSpinner(true);
     e.preventDefault();
-    if (name && email && password && confirmPassword) {
-      fetch("/api/signup", {
-        method: "POST",
-        body: JSON.stringify({
-          name,
-          email,
-          password,
-          cpassword: confirmPassword,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-        });
+    if (
+      name.length &&
+      email.length &&
+      password.length &&
+      confirmPassword.length
+    ) {
+      try {
+        fetch("/api/signup", {
+          method: "POST",
+          body: JSON.stringify({
+            name,
+            email,
+            password,
+            cpassword: confirmPassword,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            setIsMember(true);
+            setSpinner(false);
+          });
+      } catch (error) {
+        setSpinner(false);
+        setIsError(true);
+        setMessage(
+          "Failure to login! Kindly check if you have an established connection. Otherwise, try again!"
+        );
+        console.log(error);
+      }
     } else {
-      console.log("Fill all fields");
+      setIsError(true);
+      setMessage("Fill all fields");
     }
   };
 
   return (
     <section className="w-full flex justify-center mt-14">
       <div className="w-3/4 flex flex-col">
+        {isError && (
+          <div className="bg-red-500 text-white text-sm font-bold py-2 px-4 rounded flex justify-center items-center mb-4">
+            <p>{message}</p>
+          </div>
+        )}
         <h1 className="authLetter">Sign up</h1>
         <form className="mt-14 justify-center">
           <div className="authContainer">
@@ -104,9 +141,16 @@ const Signup = () => {
             />
           </div>
           <div className="w-full flex justify-center">
-            <button className="authButton" onClick={handleSubmit}>
-              Create Account
-            </button>
+            {spinner ? (
+              <button className="authButton" disabled>
+                <p className="mr-3">Creating Account</p>
+                <Spinner />
+              </button>
+            ) : (
+              <button className="authButton" onClick={handleSubmit}>
+                Create Account
+              </button>
+            )}
           </div>
         </form>
         <div className="w-full my-4 flex items-center justify-center">
