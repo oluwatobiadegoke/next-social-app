@@ -10,7 +10,7 @@ const Info = () => {
       <Link href="/profile">
         <p className="text-black-100 font-bold">{session?.user?.email}</p>
       </Link>
-      <div className="w-11 h-11 rounded-full flex items-center justify-center bg-indigo-300 ml-4">
+      <div className="w-11 h-11 rounded-full flex items-center justify-center bg-indigo-800 drop-shadow-xl ml-4">
         {!session?.user?.image === undefined ? (
           <Image
             width={44}

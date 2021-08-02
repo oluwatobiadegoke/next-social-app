@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { getSession } from "next-auth/client";
 import Image from "next/image";
 
 import Signup from "../components/signup/Signup";
@@ -28,4 +29,21 @@ export default function Home() {
       </section>
     </main>
   );
+}
+
+export async function getServerSideProps(context) {
+  const session = await getSession({ req: context.req });
+
+  if (session) {
+    return {
+      redirect: {
+        destination: "/user/home",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: { session },
+  };
 }
