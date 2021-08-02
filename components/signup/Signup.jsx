@@ -4,7 +4,7 @@ import { signIn } from "next-auth/client";
 
 import Spinner from "../utils/Spinner";
 
-const Signup = ({ setIsMember }) => {
+const Signup = ({ setIsMember, setIsSignup }) => {
   const [spinner, setSpinner] = useState(false);
   const [isError, setIsError] = useState(false);
   const [message, setMessage] = useState("");
@@ -33,7 +33,7 @@ const Signup = ({ setIsMember }) => {
       confirmPassword.length
     ) {
       try {
-        fetch("/api/signup", {
+        fetch("/api/auth/signup", {
           method: "POST",
           body: JSON.stringify({
             name,
@@ -48,6 +48,7 @@ const Signup = ({ setIsMember }) => {
           .then((response) => response.json())
           .then((data) => {
             setIsMember(true);
+            setIsSignup(true);
             setSpinner(false);
           });
       } catch (error) {

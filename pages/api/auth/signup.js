@@ -32,6 +32,7 @@ export default async function helper(req, res) {
     const db = client.db();
     const hashedPassword = await hashPassword(password);
     const user = await db.collection("users").insertOne({
+      name,
       email,
       password: hashedPassword,
     });

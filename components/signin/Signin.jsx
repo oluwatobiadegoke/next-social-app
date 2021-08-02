@@ -26,7 +26,7 @@ const Signin = ({ isSignup, setIsSignup }) => {
     e.preventDefault();
     setIsSignup(false);
     setSpinner(true);
-    if (emailRef.length && passwordRef.length) {
+    if (emailRef.current.value.length && passwordRef.current.value.length) {
       try {
         const result = await signIn(credential, {
           redirect: false,
