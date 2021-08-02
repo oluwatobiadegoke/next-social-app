@@ -26,7 +26,7 @@ export default NextAuth({
           throw new Error("Password does not match");
         }
         client.close();
-        return { email: user.email };
+        return { name: user.name, email: user.email };
       },
     }),
     Providers.Google({
