@@ -41,17 +41,16 @@ const PostInput = () => {
           .then((response) => response.json())
           .then((data) => {
             if (data.response === "0") {
-              setSpinner(false);
               setIsError(true);
               setIsSuccess(false);
               setMessage(data.message);
             } else {
-              setSpinner(false);
               setIsMessageAvail(true);
               setIsSuccess(true);
               postRef.current.value = "";
               setMessage("Post uploaded.");
             }
+            setSpinner(false);
           });
       } catch (error) {
         setSpinner(false);

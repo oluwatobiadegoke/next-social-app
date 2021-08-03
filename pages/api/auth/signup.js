@@ -35,8 +35,8 @@ export default async function helper(req, res) {
   const existingUser = await db.collection("users").findOne({ email });
 
   if (existingUser) {
-    res.status(422).json({ response: "0", message: "User already exists" });
     client.close();
+    res.status(422).json({ response: "0", message: "User already exists" });
     return;
   }
 

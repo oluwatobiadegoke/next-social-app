@@ -24,6 +24,7 @@ export default async function (req, res) {
       data: posts,
     });
   } catch (error) {
+    client.close();
     res
       .status(500)
       .json({ response: "0", message: "Error while fetching post" });

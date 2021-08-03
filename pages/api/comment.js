@@ -6,9 +6,9 @@ export default async function (req, res) {
   // ====To post a comment about a post==== //
 
   if (req.method === "POST") {
-    const { postId, userId, commentId, comment } = req.body;
+    const { postId, userId, comment } = req.body;
 
-    if (!postId || !userId || !commentId || !comment) {
+    if (!postId || !userId || !comment) {
       res
         .status(422)
         .json({ response: "0", message: "There are missing parameters." });

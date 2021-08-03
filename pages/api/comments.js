@@ -33,6 +33,7 @@ export default async function (req, res) {
       data: comments,
     });
   } catch (error) {
+    client.close();
     res
       .status(500)
       .json({ response: "0", message: "Error while fetching comments" });

@@ -6,7 +6,7 @@ import { useSession } from "next-auth/client";
 
 import Comment from "./Comment";
 
-const SinglePost = ({ poster, comments, likes, content, posterId }) => {
+const SinglePost = ({ poster, postId, likes, content, posterId }) => {
   const [session] = useSession();
 
   const [wantToComment, setWantToComment] = useState(false);
@@ -22,7 +22,9 @@ const SinglePost = ({ poster, comments, likes, content, posterId }) => {
       <div>
         <p className="py-2">{content}</p>
         <div className="h-h w-full bg-indigo-700"></div>
-        {wantToComment && <Comment />}
+        {wantToComment && (
+          <Comment postId={postId} posterId={session?.user?.userId} />
+        )}
         <div className="w-full flex justify-end mt-1 text-xs">
           <button className="flex mr-4 items-center font-bold  py-1 px-3 rounded text-blue-500 hover:bg-blue-500 hover:text-black-100 transition-all">
             <p

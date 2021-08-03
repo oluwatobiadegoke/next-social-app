@@ -48,6 +48,7 @@ export default async function helper(req, res) {
         .status(200)
         .json({ response: "1", message: "Post created successfully" });
     } catch (error) {
+      client.close();
       res.status(500).json({
         response: "0",
         message: "Could not upload post. Please try again.",

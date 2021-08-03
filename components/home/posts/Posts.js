@@ -9,6 +9,7 @@ const Posts = (props) => {
         return (
           <SinglePost
             posterId={posterId}
+            postId={postId}
             poster={poster}
             comments={comments}
             likes={likes}
