@@ -83,11 +83,24 @@ const SinglePost = ({ poster, postId, likes, content, posterId }) => {
             </p>
             <FaComments className="text-base" />
           </button>
-          <button className="flex items-center font-bold  py-1 px-3 rounded text-green-500 hover:bg-green-500 hover:text-black-100 transition-all">
-            <span>{likes}</span>
-            <p className="mx-1">Like(s)</p>
-            <BiLike className="text-base" />
-          </button>
+          {liking ? (
+            <button
+              className="flex items-center font-bold  py-1 px-3 rounded text-green-500 hover:bg-green-500 hover:text-black-100 transition-all"
+              disabled
+            >
+              <p className="mx-1">Liking</p>
+              <BiLike className="text-base" />
+            </button>
+          ) : (
+            <button
+              className="flex items-center font-bold  py-1 px-3 rounded text-green-500 hover:bg-green-500 hover:text-black-100 transition-all"
+              onClick={(e) => handleLike(e)}
+            >
+              <span>{likes}</span>
+              <p className="mx-1">Like(s)</p>
+              <BiLike className="text-base" />
+            </button>
+          )}
           {session?.user?.userId === posterId && (
             <button className="flex items-center font-bold  py-1 px-3 rounded text-black-100 bg-transparent hover:bg-red-500 transition-all">
               <RiDeleteBin5Line className="text-base" />
