@@ -11,6 +11,7 @@ const SinglePost = ({ poster, postId, likes, content, posterId }) => {
 
   const [wantToComment, setWantToComment] = useState(false);
   const [liking, setLiking] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [isMessageAvail, setIsMessageAvail] = useState(false);
   const [isError, setIsError] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -47,6 +48,40 @@ const SinglePost = ({ poster, postId, likes, content, posterId }) => {
       setLiking(false);
       setIsMessageAvail(true);
       setMessage("Couldn't put up your post. Please try again.");
+    }
+  };
+
+  const handleDelete = (e) => {
+    e.preventDefault();
+    setLiking(true);
+    try {
+      fetch("/api/post", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: session?.user?.id,
+          postId,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.response === "0") {
+            setIsError(true);
+            setIsSuccess(false);
+            setMessage(data.message);
+          } else {
+            setIsMessageAvail(true);
+            setIsSuccess(true);
+            setMessage("Post deleted.");
+          }
+          setLiking(false);
+        });
+    } catch (error) {
+      setLiking(false);
+      setIsMessageAvail(true);
+      setMessage("Couldn't delete post. Please try again.");
     }
   };
 
@@ -102,9 +137,23 @@ const SinglePost = ({ poster, postId, likes, content, posterId }) => {
             </button>
           )}
           {session?.user?.userId === posterId && (
-            <button className="flex items-center font-bold  py-1 px-3 rounded text-black-100 bg-transparent hover:bg-red-500 transition-all">
-              <RiDeleteBin5Line className="text-base" />
-            </button>
+            <>
+              {deleting ? (
+                <button
+                  className="flex items-center font-bold  py-1 px-3 rounded text-black-100 bg-transparent hover:bg-red-500 transition-all disabled:hover:bg-red-300"
+                  disabled
+                >
+                  <RiDeleteBin5Line className="text-base" />
+                </button>
+              ) : (
+                <button
+                  className="flex items-center font-bold  py-1 px-3 rounded text-black-100 bg-transparent hover:bg-red-500 transition-all"
+                  onClick={(e) => handleDelete(e)}
+                >
+                  <RiDeleteBin5Line className="text-base" />
+                </button>
+              )}
+            </>
           )}
         </div>
       </div>
