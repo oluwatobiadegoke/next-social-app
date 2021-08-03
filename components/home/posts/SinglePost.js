@@ -10,6 +10,45 @@ const SinglePost = ({ poster, postId, likes, content, posterId }) => {
   const [session] = useSession();
 
   const [wantToComment, setWantToComment] = useState(false);
+  const [liking, setLiking] = useState(false);
+  const [isMessageAvail, setIsMessageAvail] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [message, setMessage] = useState("");
+
+  const handleLike = (e) => {
+    e.preventDefault();
+    setLiking(true);
+    try {
+      fetch("/api/post", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: session?.user?.id,
+          postId,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.response === "0") {
+            setIsError(true);
+            setIsSuccess(false);
+            setMessage(data.message);
+          } else {
+            setIsMessageAvail(true);
+            setIsSuccess(true);
+            setMessage("Post liked.");
+          }
+          setLiking(false);
+        });
+    } catch (error) {
+      setLiking(false);
+      setIsMessageAvail(true);
+      setMessage("Couldn't put up your post. Please try again.");
+    }
+  };
 
   return (
     <div className="shadow-2xl bg-indigo-800 text-black-100 rounded-lg px-4 py-5 my-6 text-sm">
@@ -24,6 +63,15 @@ const SinglePost = ({ poster, postId, likes, content, posterId }) => {
         <div className="h-h w-full bg-indigo-700"></div>
         {wantToComment && (
           <Comment postId={postId} posterId={session?.user?.userId} />
+        )}
+        {(isError || isMessageAvail) && (
+          <div
+            className={`bg-transparent ${
+              isSuccess ? "text-green-500" : "text-red-500"
+            } text-sm font-bold py-2 px-4 flex justify-center items-center mb-4`}
+          >
+            <p>{message}</p>
+          </div>
         )}
         <div className="w-full flex justify-end mt-1 text-xs">
           <button className="flex mr-4 items-center font-bold  py-1 px-3 rounded text-blue-500 hover:bg-blue-500 hover:text-black-100 transition-all">
