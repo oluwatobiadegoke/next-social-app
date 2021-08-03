@@ -46,12 +46,12 @@ export default async function (req, res) {
       client.close();
       res
         .status(200)
-        .send({ response: "1", message: "Comment created successfully" });
+        .json({ response: "1", message: "Comment created successfully" });
     } catch (error) {
       client.close();
       res
         .status(500)
-        .send({ response: "0", message: "Error creating comment" });
+        .json({ response: "0", message: "Error creating comment" });
       return;
     }
   }
@@ -95,10 +95,10 @@ export default async function (req, res) {
       client.close();
       res
         .status(200)
-        .send({ response: "1", message: "Comment liked successfully" });
+        .json({ response: "1", message: "Comment liked successfully" });
     } catch (error) {
       client.close();
-      res.status(500).send({ response: "0", message: "Error liking comment" });
+      res.status(500).json({ response: "0", message: "Error liking comment" });
       return;
     }
   }
@@ -142,12 +142,12 @@ export default async function (req, res) {
       client.close();
       res
         .status(200)
-        .send({ response: "1", message: "Comment deleted successfully" });
+        .json({ response: "1", message: "Comment deleted successfully" });
     } catch (error) {
       client.close();
       res
         .status(500)
-        .send({ response: "0", message: "Error deleting comment" });
+        .json({ response: "0", message: "Error deleting comment" });
       return;
     }
   }

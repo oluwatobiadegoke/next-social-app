@@ -134,10 +134,10 @@ export default async function helper(req, res) {
       client.close();
       res
         .status(200)
-        .send({ response: "1", message: "Post liked successfully" });
+        .json({ response: "1", message: "Post liked successfully" });
     } catch (error) {
       client.close();
-      res.status(500).send({ response: "0", message: "Error liking post" });
+      res.status(500).json({ response: "0", message: "Error liking post" });
       return;
     }
   }
@@ -181,10 +181,10 @@ export default async function helper(req, res) {
       client.close();
       res
         .status(200)
-        .send({ response: "1", message: "Post deleted successfully" });
+        .json({ response: "1", message: "Post deleted successfully" });
     } catch (error) {
       client.close();
-      res.status(500).send({ response: "0", message: "Error deleting post" });
+      res.status(500).json({ response: "0", message: "Error deleting post" });
       return;
     }
   }

@@ -5,9 +5,10 @@ const Posts = (props) => {
   return (
     <div className="mt-4">
       {posts.map((post) => {
-        const { postId, poster, comments, likes, content } = post;
+        const { postId, poster, comments, likes, content, posterId } = post;
         return (
           <SinglePost
+            posterId={posterId}
             poster={poster}
             comments={comments}
             likes={likes}

@@ -34,6 +34,16 @@ const Post = () => {
     );
   }
 
+  if (posts.length < 1) {
+    return (
+      <div className="mt-4 text-center px-4">
+        <p className="text-red-500 font-bold">
+          There are currently no post available.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div>
       <Posts posts={posts} />
