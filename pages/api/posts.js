@@ -15,16 +15,14 @@ export default async function (req, res) {
   }
 
   try {
-    const db = client.db();
-    const posts = db.collection("posts").find();
+    const db = client.db("xpress");
+    const posts = await db.collection("posts").find({}).toArray();
     client.close();
-    res
-      .json(200)
-      .json({
-        response: "1",
-        message: "Posts fetched successfully",
-        data: posts,
-      });
+    res.status(200).json({
+      response: "1",
+      message: "Posts fetched successfully",
+      data: posts,
+    });
   } catch (error) {
     res.json(500).json({ response: "0", message: "Error while fetching post" });
     return;

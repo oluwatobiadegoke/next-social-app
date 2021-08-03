@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from "uuid";
+
 import { connectToDatabase } from "../../helpers/database";
 
 export default async function helper(req, res) {
@@ -22,11 +24,14 @@ export default async function helper(req, res) {
       return;
     }
 
+    const postId = uuidv4();
+
     try {
       const db = client.db();
       const post = await db.collection("posts").insertOne({
         poster,
         posterId,
+        postId,
         content,
         likes: 0,
         comments: [],

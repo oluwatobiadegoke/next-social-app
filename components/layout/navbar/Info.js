@@ -4,7 +4,6 @@ import { useSession } from "next-auth/client";
 
 const Info = () => {
   const [session] = useSession();
-  console.log(session.user);
   return (
     <div className="flex-1 flex items-center justify-end">
       <Link href="/profile">

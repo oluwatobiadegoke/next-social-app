@@ -1,36 +1,39 @@
-import Posts from "./Posts";
+import React, { useState, useEffect } from "react";
+import useSWR from "swr";
 
-const posts = [
-  {
-    id: 1,
-    owner: "Adesanmi Dada",
-    pic: "",
-    comments: "2",
-    likes: "4",
-    thepost:
-      "This is a post. This is simply for testing the possibilities that can be attained by this app. I'm so happy to be building this. It gives me some sort of overview over the my current cappabilites. Hence, reinforcing the belief I have in myself.",
-  },
-  {
-    id: 2,
-    owner: "Adesanmi Dada",
-    pic: "",
-    comments: "2",
-    likes: "4",
-    thepost:
-      "This is a post. This is simply for testing the possibilities that can be attained by this app. I'm so happy to be building this. It gives me some sort of overview over the my current cappabilites. Hence, reinforcing the belief I have in myself.",
-  },
-  {
-    id: 3,
-    owner: "Adesanmi Dada",
-    pic: "",
-    comments: "2",
-    likes: "4",
-    thepost:
-      "This is a post. This is simply for testing the possibilities that can be attained by this app. I'm so happy to be building this. It gives me some sort of overview over the my current cappabilites. Hence, reinforcing the belief I have in myself.",
-  },
-];
+import Posts from "./Posts";
+import Spinner from "../../utils/Spinner";
 
 const Post = () => {
+  const [posts, setPosts] = useState();
+
+  const { data: data, error } = useSWR("/api/posts");
+
+  useEffect(() => {
+    if (data) {
+      setPosts(data.data);
+    }
+  }, [data]);
+
+  if (error) {
+    return (
+      <div className="mt-4 text-center px-4">
+        <p className="text-red-500 font-bold">
+          Error! Couldn't fetch posts. Please refresh the page or try again
+          later
+        </p>
+      </div>
+    );
+  }
+
+  if (!data || !posts) {
+    return (
+      <div className="mt-4 flex justify-center">
+        <Spinner />
+      </div>
+    );
+  }
+
   return (
     <div>
       <Posts posts={posts} />

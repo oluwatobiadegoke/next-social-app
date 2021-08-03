@@ -7,6 +7,18 @@ export default NextAuth({
   session: {
     jwt: true,
   },
+  callbacks: {
+    jwt: async (token, user, account, profile, isNewUser) => {
+      if (user) {
+        token.userId = user.userId;
+      }
+      return Promise.resolve(token);
+    },
+    session: async (session, user) => {
+      session.user.userId = user.userId;
+      return Promise.resolve(session);
+    },
+  },
   providers: [
     Providers.Credentials({
       async authorize(credentials) {
@@ -26,7 +38,7 @@ export default NextAuth({
           throw new Error("Password does not match");
         }
         client.close();
-        return { name: user.name, email: user.email };
+        return Promise.resolve(user);
       },
     }),
     Providers.Google({

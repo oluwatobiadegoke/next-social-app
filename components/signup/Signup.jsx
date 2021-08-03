@@ -47,9 +47,15 @@ const Signup = ({ setIsMember, setIsSignup }) => {
         })
           .then((response) => response.json())
           .then((data) => {
-            setIsMember(true);
-            setIsSignup(true);
-            setSpinner(false);
+            if (data.response === "0") {
+              setSpinner(false);
+              setIsError(true);
+              setMessage(data.message);
+            } else {
+              setIsMember(true);
+              setIsSignup(true);
+              setSpinner(false);
+            }
           });
       } catch (error) {
         setSpinner(false);
@@ -62,6 +68,7 @@ const Signup = ({ setIsMember, setIsSignup }) => {
     } else {
       setIsError(true);
       setMessage("Fill all fields");
+      setSpinner(false);
     }
   };
 
@@ -148,7 +155,7 @@ const Signup = ({ setIsMember, setIsSignup }) => {
                 <Spinner />
               </button>
             ) : (
-              <button className="authButton" onClick={handleSubmit}>
+              <button className="authButton" onClick={(e) => handleSubmit(e)}>
                 Create Account
               </button>
             )}

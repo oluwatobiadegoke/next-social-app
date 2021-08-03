@@ -1,19 +1,19 @@
 import { FaComments } from "react-icons/fa";
 import { BiLike } from "react-icons/bi";
 
-const SinglePost = ({ owner, pic, comments, likes, thepost }) => {
+const SinglePost = ({ poster, comments, likes, content }) => {
   return (
     <div className="shadow-2xl bg-indigo-800 text-black-100 rounded-lg px-4 py-5 my-6 text-sm">
       <div className="bg-indigo-800 flex items-center border-b border-indigo-700 pb-1">
         <div className="w-10 h-10 rounded-full flex items-center justify-center bg-white mr-3">
           <p>A</p>
         </div>
-        <p>{owner}</p>
+        <p>{poster}</p>
       </div>
       <div>
         <p className="py-2">
           {/* <RiDoubleQuotesL /> */}
-          <span>{thepost}</span>
+          <span>{content}</span>
           {/* <RiDoubleQuotesR /> */}
         </p>
         <div className="h-h w-full bg-indigo-700"></div>
