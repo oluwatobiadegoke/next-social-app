@@ -59,6 +59,7 @@ const PostInput = () => {
       }
     } else {
       setIsError(true);
+      setSpinner(false);
       setMessage("Type in something...");
     }
   };
