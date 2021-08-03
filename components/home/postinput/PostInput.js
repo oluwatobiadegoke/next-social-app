@@ -35,7 +35,7 @@ const PostInput = () => {
           body: JSON.stringify({
             content: postRef.current.value,
             poster: session?.user?.name,
-            posterId: session?.user?.userId,
+            userId: session?.user?.userId,
           }),
         })
           .then((response) => response.json())

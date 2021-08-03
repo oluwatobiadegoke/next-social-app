@@ -5,6 +5,15 @@ export default async function (req, res) {
     res.status(422).json({ response: "0", message: "Method not supported" });
   }
 
+  const { userId, postId } = req.body;
+
+  if (!userId || !postId) {
+    res
+      .status(422)
+      .json({ response: "0", message: "There are missing parameters" });
+    return;
+  }
+
   let client;
   try {
     client = await connectToDatabase();
@@ -16,17 +25,17 @@ export default async function (req, res) {
 
   try {
     const db = client.db("xpress");
-    const posts = await db.collection("posts").find({}).toArray();
+    const comments = await db.collection("comments").find({ postId }).toArray();
     client.close();
     res.status(200).json({
       response: "1",
-      message: "Posts fetched successfully",
-      data: posts,
+      message: "Comments fetched successfully",
+      data: comments,
     });
   } catch (error) {
     res
       .status(500)
-      .json({ response: "0", message: "Error while fetching post" });
+      .json({ response: "0", message: "Error while fetching comments" });
     return;
   }
 }
