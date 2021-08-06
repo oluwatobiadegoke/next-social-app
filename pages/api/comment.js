@@ -27,6 +27,7 @@ export default async function (req, res) {
 
     const db = client.db();
     const existingUser = await db.collection("users").findOne({ userId });
+    const existingUsername = existingUser.name;
 
     if (!existingUser) {
       res.status(401).json({ response: 0, message: "Not authorized" });
@@ -39,6 +40,7 @@ export default async function (req, res) {
       const comment = await db.collection("comments").insertOne({
         postId,
         posterId: userId,
+        poster: existingUsername,
         commentId,
         comment,
         likes: 0,

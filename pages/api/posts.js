@@ -3,6 +3,7 @@ import { connectToDatabase } from "../../helpers/database";
 export default async function (req, res) {
   if (req.method !== "GET") {
     res.status(422).json({ response: "0", message: "Method not supported" });
+    return;
   }
 
   let client;
@@ -12,6 +13,7 @@ export default async function (req, res) {
     res
       .status(500)
       .json({ response: "0", message: "Error connecting to database" });
+    return;
   }
 
   try {
@@ -24,7 +26,6 @@ export default async function (req, res) {
       data: posts,
     });
   } catch (error) {
-    client.close();
     res
       .status(500)
       .json({ response: "0", message: "Error while fetching post" });

@@ -9,6 +9,8 @@ const Post = () => {
 
   const { data: data, error } = useSWR("/api/posts");
 
+  console.log(data.data, posts);
+
   useEffect(() => {
     if (data) {
       setPosts(data.data);
@@ -26,7 +28,7 @@ const Post = () => {
     );
   }
 
-  if (!data || !posts) {
+  if (!posts) {
     return (
       <div className="mt-4 flex justify-center">
         <Spinner />

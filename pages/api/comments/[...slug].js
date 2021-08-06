@@ -1,11 +1,13 @@
-import { connectToDatabase } from "../../helpers/database";
+import { connectToDatabase } from "../../../helpers/database";
 
 export default async function (req, res) {
   if (req.method !== "GET") {
     res.status(422).json({ response: "0", message: "Method not supported" });
   }
 
-  const { userId, postId } = req.body;
+  const slug = req.query.slug;
+  const postId = slug[0];
+  const userId = slug[1];
 
   if (!userId || !postId) {
     res

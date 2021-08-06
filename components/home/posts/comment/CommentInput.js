@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 
-const Comment = ({ postId, posterId }) => {
+const CommentInput = ({ postId, posterId }) => {
   const commentRef = useRef();
 
   const [posting, setPosting] = useState(false);
@@ -88,7 +88,7 @@ const Comment = ({ postId, posterId }) => {
         ) : (
           <button
             className="flex items-center font-bold  py-1 px-3 rounded text-green-500 hover:bg-green-500 hover:text-black-100 transition-all"
-            onClick={(e = handleSubmit(e))}
+            onClick={(e) => handleSubmit(e)}
           >
             submit
           </button>
@@ -98,4 +98,4 @@ const Comment = ({ postId, posterId }) => {
   );
 };
 
-export default Comment;
+export default CommentInput;

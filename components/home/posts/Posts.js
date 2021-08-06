@@ -11,7 +11,6 @@ const Posts = (props) => {
             posterId={posterId}
             postId={postId}
             poster={poster}
-            comments={comments}
             likes={likes}
             content={content}
             key={postId}

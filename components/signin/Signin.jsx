@@ -34,14 +34,16 @@ const Signin = ({ isSignup, setIsSignup }) => {
           password: passwordRef.current.value,
         });
         if (result.error) {
-          setIsError(true);
-          setMessage(result.error);
           setSpinner(false);
+          setIsError(true);
+          setMessage("Couldn't sign you in. Please try again.");
         }
         router.push("/user/home");
         setSpinner(false);
       } catch (error) {
         setSpinner(false);
+        setIsError(true);
+        setMessage("Couldn't sign you in. Please try again.");
       }
     } else {
       setSpinner(false);
