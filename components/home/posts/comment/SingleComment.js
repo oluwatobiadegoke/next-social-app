@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BiLike } from "react-icons/bi";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useSession } from "next-auth/client";
@@ -12,6 +12,7 @@ const SingleComment = ({
   likes,
 }) => {
   const [session] = useSession();
+  const userId = session.user.userId;
 
   const [liking, setLiking] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -20,18 +21,28 @@ const SingleComment = ({
   const [isSuccess, setIsSuccess] = useState(false);
   const [message, setMessage] = useState("");
 
+  useEffect(() => {
+    const timeOut = setTimeout(() => {
+      setIsError(false);
+      setIsMessageAvail(false);
+    }, 3000);
+    return () => {
+      clearTimeout(timeOut);
+    };
+  }, [isError, isMessageAvail]);
+
   const handleLike = (e) => {
     e.preventDefault();
     setLiking(true);
     try {
-      fetch("/api/post", {
+      fetch("/api/comment", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          userId: session?.user?.id,
-          commentId,
+          userId: userId,
+          commentId: commentId,
         }),
       })
         .then((response) => response.json())
@@ -54,9 +65,9 @@ const SingleComment = ({
     }
   };
   return (
-    <div className="shadow-2xl bg-indigo-800 text-black-100 rounded-lg px-4 py-5 my-6 text-sm">
+    <div className="shadow-2xl bg-indigo-800 text-black-100 rounded-lg px-4 py-7 my-6 text-sm">
       <div className="bg-indigo-800 flex items-center border-b border-indigo-700 pb-1">
-        <div className="w-10 h-10 rounded-full flex items-center justify-center bg-white mr-3">
+        <div className="w-5 h-5 rounded-full flex items-center justify-center bg-indigo-600 mr-3">
           <p>A</p>
         </div>
         <p>{poster}</p>

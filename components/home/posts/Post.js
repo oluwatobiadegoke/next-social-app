@@ -9,8 +9,6 @@ const Post = () => {
 
   const { data: data, error } = useSWR("/api/posts");
 
-  console.log(data.data, posts);
-
   useEffect(() => {
     if (data) {
       setPosts(data.data);

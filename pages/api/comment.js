@@ -36,8 +36,8 @@ export default async function (req, res) {
     const commentId = uuidv4();
 
     try {
-      const db = client.db();
-      const comment = await db.collection("comments").insertOne({
+      const db = client.db("xpress");
+      const thecomment = await db.collection("comments").insertOne({
         postId,
         posterId: userId,
         poster: existingUsername,
@@ -50,6 +50,7 @@ export default async function (req, res) {
         .status(200)
         .json({ response: "1", message: "Comment created successfully" });
     } catch (error) {
+      console.log(error);
       client.close();
       res
         .status(500)

@@ -9,6 +9,7 @@ export default async function (req, res) {
   const postId = slug[0];
   const userId = slug[1];
 
+  console.log(postId, userId);
   if (!userId || !postId) {
     res
       .status(422)
@@ -23,11 +24,15 @@ export default async function (req, res) {
     res
       .status(500)
       .json({ response: "0", message: "Error connecting to database" });
+    return;
   }
 
   try {
     const db = client.db("xpress");
-    const comments = await db.collection("comments").find({ postId }).toArray();
+    const comments = await db
+      .collection("comments")
+      .find({ postId: postId })
+      .toArray();
     client.close();
     res.status(200).json({
       response: "1",

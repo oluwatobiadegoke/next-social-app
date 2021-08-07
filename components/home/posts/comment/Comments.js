@@ -27,10 +27,13 @@ const Comments = ({ postId, posterId }) => {
     );
   }
 
-  if (!comments) {
+  if (!comments || !data) {
     return (
-      <div className="mt-4 flex justify-center">
-        <p>Loading comments</p> <Loader />
+      <div className="mt-4 flex flex-col justify-center">
+        <div className="flex mb-4 items-center">
+          <p>Loading comments</p> <Loader />
+        </div>
+        <CommentInput postId={postId} posterId={posterId} />
       </div>
     );
   }
@@ -38,9 +41,8 @@ const Comments = ({ postId, posterId }) => {
   if (comments.length < 1) {
     return (
       <div className="mt-4 text-center px-4">
-        <p className="text-red-500 font-bold">
-          There are currently no comments available.
-        </p>
+        <p className="text-red-500 font-bold">No comment has been created.</p>
+        <CommentInput postId={postId} posterId={posterId} />
       </div>
     );
   }

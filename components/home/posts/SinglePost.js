@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaComments } from "react-icons/fa";
 import { BiLike } from "react-icons/bi";
 import { RiDeleteBin5Line } from "react-icons/ri";
@@ -9,14 +9,27 @@ import Comments from "./comment/Comments";
 
 const SinglePost = ({ poster, postId, likes, content, posterId }) => {
   const [session] = useSession();
+  const user = session.user.userId;
 
-  const [commentLength, setCommentLength] = useState();
+  const [commentLength, setCommentLength] = useState(0);
 
   const { data: data, error } = useSWR(`/api/comments/${postId}/${posterId}`);
 
   useEffect(() => {
+    const timeOut = setTimeout(() => {
+      setIsError(false);
+      setIsMessageAvail(false);
+    }, 3000);
+    return () => {
+      clearTimeout(timeOut);
+    };
+  }, [isError, isMessageAvail]);
+
+  useEffect(() => {
     if (data) {
       setCommentLength(data?.data?.length);
+    } else {
+      setCommentLength(0);
     }
   }, [data]);
 
@@ -42,8 +55,8 @@ const SinglePost = ({ poster, postId, likes, content, posterId }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          userId: session?.user?.id,
-          postId,
+          userId: user,
+          postId: postId,
         }),
       })
         .then((response) => response.json())
@@ -168,9 +181,7 @@ const SinglePost = ({ poster, postId, likes, content, posterId }) => {
             </>
           )}
         </div>
-        {wantToComment && (
-          <Comments postId={postId} posterId={session?.user?.userId} />
-        )}
+        {wantToComment && <Comments postId={postId} posterId={user} />}
       </div>
     </div>
   );

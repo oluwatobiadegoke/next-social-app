@@ -30,7 +30,7 @@ const CommentInput = ({ postId, posterId }) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            postId,
+            postId: postId,
             userId: posterId,
             comment: commentRef.current.value,
           }),
