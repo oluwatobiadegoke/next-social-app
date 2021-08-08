@@ -48,7 +48,7 @@ const Comments = ({ postId, posterId }) => {
   }
 
   return (
-    <div>
+    <div className="max-h-screen overflow-hidden">
       <CommentInput postId={postId} posterId={posterId} />
       <Comment comments={comments} />
     </div>

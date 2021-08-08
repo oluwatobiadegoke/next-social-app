@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { getSession } from "next-auth/client";
-import Image from "next/image";
 
 import Signup from "../components/signup/Signup";
 import Signin from "../components/signin/Signin";
