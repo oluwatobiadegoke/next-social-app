@@ -1,5 +1,5 @@
 import SingleComment from "./SingleComment";
-import Scroll from "../../../components/utils/Scroll";
+import Scroll from "../../../utils/Scroll";
 
 const Comment = (props) => {
   const { comments } = props;
