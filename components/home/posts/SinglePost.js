@@ -6,6 +6,7 @@ import { useSession } from "next-auth/client";
 import useSWR from "swr";
 
 import Comments from "./comment/Comments";
+import Loader from "../../utils/Loader";
 
 const SinglePost = ({ poster, postId, likes, content, posterId }) => {
   const [session] = useSession();
@@ -134,13 +135,11 @@ const SinglePost = ({ poster, postId, likes, content, posterId }) => {
           </div>
         )}
         <div className="w-full flex justify-end mt-1 text-xs">
-          <button className="flex mr-4 items-center font-bold  py-1 px-3 rounded text-blue-500 hover:bg-blue-500 hover:text-black-100 transition-all">
-            <p
-              className="mr-1"
-              onClick={() => setWantToComment(!wantToComment)}
-            >
-              <span>{commentLength ? commentLength : 0} </span>Comment(s)
-            </p>
+          <button
+            className="flex mr-4 items-center font-bold  py-1 px-3 rounded text-blue-500 hover:bg-blue-500 hover:text-black-100 transition-all"
+            onClick={() => setWantToComment(!wantToComment)}
+          >
+            <p className="mr-1">{commentLength ? commentLength : 0}</p>
             <FaComments className="text-base" />
           </button>
           {liking ? (
@@ -148,8 +147,7 @@ const SinglePost = ({ poster, postId, likes, content, posterId }) => {
               className="flex items-center font-bold  py-1 px-3 rounded text-green-500 hover:bg-green-500 hover:text-black-100 transition-all"
               disabled
             >
-              <p className="mx-1">Liking</p>
-              <BiLike className="text-base" />
+              <Loader />
             </button>
           ) : (
             <button
@@ -157,7 +155,6 @@ const SinglePost = ({ poster, postId, likes, content, posterId }) => {
               onClick={(e) => handleLike(e)}
             >
               <span>{likes}</span>
-              <p className="mx-1">Like(s)</p>
               <BiLike className="text-base" />
             </button>
           )}
@@ -168,7 +165,7 @@ const SinglePost = ({ poster, postId, likes, content, posterId }) => {
                   className="flex items-center font-bold  py-1 px-3 rounded text-black-100 bg-transparent hover:bg-red-500 transition-all disabled:hover:bg-red-300"
                   disabled
                 >
-                  <RiDeleteBin5Line className="text-base" />
+                  <Loader />
                 </button>
               ) : (
                 <button
