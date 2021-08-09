@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import useSWR from "swr";
 
 import Comment from "./Comment";
@@ -6,15 +5,11 @@ import CommentInput from "./CommentInput";
 import Loader from "../../../utils/Loader";
 
 const Comments = ({ postId, posterId }) => {
-  const [comments, setComments] = useState();
-
-  const { data: data, error } = useSWR(`/api/comments/${postId}/${posterId}`);
-
-  useEffect(() => {
-    if (data) {
-      setComments(data.data);
-    }
-  }, [data]);
+  const {
+    data: data,
+    error,
+    mutate,
+  } = useSWR(`/api/comments/${postId}/${posterId}`);
 
   if (error) {
     return (
@@ -27,7 +22,7 @@ const Comments = ({ postId, posterId }) => {
     );
   }
 
-  if (!comments || !data) {
+  if (!data) {
     return (
       <div className="mt-4 flex flex-col justify-center">
         <div className="flex mb-4 items-center">
@@ -38,7 +33,7 @@ const Comments = ({ postId, posterId }) => {
     );
   }
 
-  if (comments.length < 1) {
+  if (data.data < 1) {
     return (
       <div className="mt-4 text-center px-4">
         <p className="text-red-500 font-bold">No comment has been created.</p>
@@ -50,7 +45,7 @@ const Comments = ({ postId, posterId }) => {
   return (
     <div className="max-h-screen overflow-hidden">
       <CommentInput postId={postId} posterId={posterId} />
-      <Comment comments={comments} />
+      <Comment comments={data.data} mutate={mutate} />
     </div>
   );
 };

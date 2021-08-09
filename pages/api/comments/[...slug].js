@@ -9,7 +9,6 @@ export default async function (req, res) {
   const postId = slug[0];
   const userId = slug[1];
 
-  console.log(postId, userId);
   if (!userId || !postId) {
     res
       .status(422)

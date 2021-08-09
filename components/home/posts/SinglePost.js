@@ -46,6 +46,8 @@ const SinglePost = ({ poster, postId, likes, content, posterId }) => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [message, setMessage] = useState("");
 
+  console.log(wantToComment);
+
   const handleLike = (e) => {
     e.preventDefault();
     setLiking(true);
@@ -165,7 +167,7 @@ const SinglePost = ({ poster, postId, likes, content, posterId }) => {
                   className="flex items-center font-bold  py-1 px-3 rounded text-black-100 bg-transparent hover:bg-red-500 transition-all disabled:hover:bg-red-300"
                   disabled
                 >
-                  <Loader />
+                  <RiDeleteBin5Line className="text-base" />
                 </button>
               ) : (
                 <button

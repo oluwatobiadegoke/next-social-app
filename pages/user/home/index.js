@@ -7,10 +7,7 @@ import Scroll from "../../../components/utils/Scroll";
 const index = () => {
   return (
     <Scroll>
-      <section
-        className="px-5 relative bg-indigo-800"
-        // style={{ height: "calc(100vh - 64px)" }}
-      >
+      <section className="px-5 relative bg-indigo-800">
         <PostInput />
         <div className="h-h w-full bg-indigo-700"></div>
         <Post />

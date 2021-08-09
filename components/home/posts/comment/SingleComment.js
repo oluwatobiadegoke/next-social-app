@@ -10,6 +10,7 @@ const SingleComment = ({
   commentId,
   comment,
   likes,
+  mutate,
 }) => {
   const [session] = useSession();
   const userId = session.user.userId;
@@ -51,6 +52,10 @@ const SingleComment = ({
             setIsError(true);
             setIsSuccess(false);
             setMessage(data.message);
+            mutate({
+              data: { ...data },
+              likes: likes + 1,
+            });
           } else {
             setIsMessageAvail(true);
             setIsSuccess(true);
