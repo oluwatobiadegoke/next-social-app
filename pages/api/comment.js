@@ -46,9 +46,13 @@ export default async function (req, res) {
         likes: 0,
       });
       client.close();
-      res
-        .status(200)
-        .json({ response: "1", message: "Comment created successfully" });
+      // const allComments = await fetch(`/api/comments/${postId}${userId}`);
+      // const response = await allComments.json();
+      res.status(200).json({
+        response: "1",
+        message: "Comment created successfully",
+        // data: response,
+      });
     } catch (error) {
       console.log(error);
       client.close();

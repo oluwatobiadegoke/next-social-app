@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { FaComments } from "react-icons/fa";
 import { BiLike } from "react-icons/bi";
 import { RiDeleteBin5Line } from "react-icons/ri";

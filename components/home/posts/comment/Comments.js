@@ -1,15 +1,24 @@
 import useSWR from "swr";
+import { useState, useEffect } from "react";
 
 import Comment from "./Comment";
 import CommentInput from "./CommentInput";
 import Loader from "../../../utils/Loader";
 
 const Comments = ({ postId, posterId }) => {
+  const [comments, setComments] = useState();
+
   const {
     data: data,
     error,
     mutate,
   } = useSWR(`/api/comments/${postId}/${posterId}`);
+
+  useEffect(() => {
+    if (data) {
+      setComments(data);
+    }
+  }, [data]);
 
   if (error) {
     return (
@@ -33,7 +42,7 @@ const Comments = ({ postId, posterId }) => {
     );
   }
 
-  if (data.data < 1) {
+  if (comments < 1) {
     return (
       <div className="mt-4 text-center px-4">
         <p className="text-red-500 font-bold">No comment has been created.</p>
@@ -45,7 +54,7 @@ const Comments = ({ postId, posterId }) => {
   return (
     <div className="max-h-screen overflow-hidden">
       <CommentInput postId={postId} posterId={posterId} />
-      <Comment comments={data.data} mutate={mutate} />
+      <Comment comments={comments} mutate={mutate} />
     </div>
   );
 };

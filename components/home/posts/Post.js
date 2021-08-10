@@ -46,7 +46,7 @@ const Post = () => {
 
   return (
     <div>
-      <Posts posts={posts} />
+      <Posts posts={posts} setPosts={setPosts} />
     </div>
   );
 };

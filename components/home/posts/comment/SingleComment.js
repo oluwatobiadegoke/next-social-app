@@ -52,14 +52,14 @@ const SingleComment = ({
             setIsError(true);
             setIsSuccess(false);
             setMessage(data.message);
-            mutate({
-              data: { ...data },
-              likes: likes + 1,
-            });
           } else {
             setIsMessageAvail(true);
             setIsSuccess(true);
             setMessage("Post liked.");
+            // mutate({
+            //   ...data,
+            //   likes: likes + 1,
+            // });
           }
           setLiking(false);
         });
@@ -73,7 +73,7 @@ const SingleComment = ({
     <div className="shadow-2xl bg-indigo-800 text-black-100 rounded-lg px-4 py-7 my-6 text-sm">
       <div className="bg-indigo-800 flex items-center border-b border-indigo-700 pb-1">
         <div className="w-5 h-5 rounded-full flex items-center justify-center bg-indigo-600 mr-3">
-          <p>A</p>
+          <p>{poster.slice(0, 1).toUpperCase()}</p>
         </div>
         <p>{poster}</p>
       </div>
@@ -95,7 +95,8 @@ const SingleComment = ({
               className="flex items-center font-bold  py-1 px-3 rounded text-green-500 hover:bg-green-500 hover:text-black-100 transition-all"
               disabled
             >
-              <p className="mx-1">Liking</p>
+              <span>{likes}</span>
+              <p className="mx-1">Like(s)</p>
               <BiLike className="text-base" />
             </button>
           ) : (
