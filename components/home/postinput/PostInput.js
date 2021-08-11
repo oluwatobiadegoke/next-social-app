@@ -1,8 +1,13 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useSession } from "next-auth/client";
+import { v4 as uuidv4 } from "uuid";
+import firebase from "firebase/app";
 
-const PostInput = () => {
+import { db } from "../../../firebase";
+
+const PostInput = ({ setPostUpdated, postUpdated }) => {
   const [session] = useSession();
+  // const db = app.firestore();
 
   const [spinner, setSpinner] = useState(false);
   const [isMessageAvail, setIsMessageAvail] = useState(false);
@@ -23,44 +28,33 @@ const PostInput = () => {
   }, [isError, isMessageAvail]);
 
   const handleSubmit = (e) => {
-    setSpinner(true);
     e.preventDefault();
-    if (postRef.current.value.length) {
-      try {
-        fetch("/api/post", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            content: postRef.current.value,
-            poster: session?.user?.name,
-            userId: session?.user?.userId,
-          }),
+    setSpinner(true);
+    const postId = uuidv4();
+    const params = {
+      postId,
+      content: postRef.current.value,
+      poster: session?.user?.name,
+      userId: session?.user?.userId,
+      likes: 0,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    };
+    if (db) {
+      db.collection("posts")
+        .add(params)
+        .then(() => {
+          setPostUpdated(!postUpdated);
+          setIsMessageAvail(true);
+          setIsSuccess(true);
+          postRef.current.value = "";
+          setMessage("Post uploaded.");
         })
-          .then((response) => response.json())
-          .then((data) => {
-            if (data.response === "0") {
-              setIsError(true);
-              setIsSuccess(false);
-              setMessage(data.message);
-            } else {
-              setIsMessageAvail(true);
-              setIsSuccess(true);
-              postRef.current.value = "";
-              setMessage("Post uploaded.");
-            }
-            setSpinner(false);
-          });
-      } catch (error) {
-        setSpinner(false);
-        setIsMessageAvail(true);
-        setMessage("Couldn't put up your post. Please try again.");
-      }
-    } else {
-      setIsError(true);
+        .catch((err) => {
+          setIsError(true);
+          setIsSuccess(false);
+          setMessage(err);
+        });
       setSpinner(false);
-      setMessage("Type in something...");
     }
   };
 

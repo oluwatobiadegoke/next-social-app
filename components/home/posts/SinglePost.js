@@ -4,11 +4,22 @@ import { BiLike } from "react-icons/bi";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useSession } from "next-auth/client";
 import useSWR from "swr";
+import firebase from "firebase/app";
 
 import Comments from "./comment/Comments";
 import Loader from "../../utils/Loader";
+import { db } from "../../../firebase";
 
-const SinglePost = ({ poster, postId, likes, content, posterId }) => {
+const SinglePost = ({
+  poster,
+  postId,
+  likes,
+  content,
+  posterId,
+  setPostUpdated,
+  postUpdated,
+  docId,
+}) => {
   const [session] = useSession();
   const user = session.user.userId;
 
@@ -46,74 +57,50 @@ const SinglePost = ({ poster, postId, likes, content, posterId }) => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [message, setMessage] = useState("");
 
-  console.log(wantToComment);
+  console.log(docId);
 
   const handleLike = (e) => {
     e.preventDefault();
     setLiking(true);
-    try {
-      fetch("/api/post", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId: user,
-          postId: postId,
-        }),
+    db.collection("posts")
+      .doc(docId)
+      .update({ likes: likes + 1 })
+      .then(() => {
+        setLiking(false);
+        setIsSuccess(true);
+        setIsError(false);
+        setMessage("Like added");
+        setPostUpdated(!postUpdated);
       })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.response === "0") {
-            setIsError(true);
-            setIsSuccess(false);
-            setMessage(data.message);
-          } else {
-            setIsMessageAvail(true);
-            setIsSuccess(true);
-            setMessage("Post liked.");
-          }
-          setLiking(false);
-        });
-    } catch (error) {
-      setLiking(false);
-      setIsMessageAvail(true);
-      setMessage("Couldn't put up your post. Please try again.");
-    }
+      .catch((error) => {
+        setIsError(true);
+        setIsSuccess(false);
+        setMessage("Post not liked.");
+        setLiking(false);
+      });
   };
 
   const handleDelete = (e) => {
     e.preventDefault();
     setDeleting(true);
-    try {
-      fetch("/api/post", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId: session?.user?.id,
-          postId,
-        }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.response === "0") {
-            setIsError(true);
-            setIsSuccess(false);
-            setMessage(data.message);
-          } else {
-            setIsMessageAvail(true);
-            setIsSuccess(true);
-            setMessage("Post deleted.");
-          }
+    const postQuery = db.collection("posts").where("postId", "==", postId);
+    postQuery
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          doc.ref.delete();
+          setIsSuccess(true);
           setDeleting(false);
+          setPostUpdated(!postUpdated);
         });
-    } catch (error) {
-      setDeleting(false);
-      setIsMessageAvail(true);
-      setMessage("Couldn't delete post. Please try again.");
-    }
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsError(true);
+        setIsMessageAvail(true);
+        setMessage("Couldn't delete your post. Please try again.");
+        setDeleting(false);
+      });
   };
 
   return (
@@ -144,12 +131,13 @@ const SinglePost = ({ poster, postId, likes, content, posterId }) => {
             <p className="mr-1">{commentLength ? commentLength : 0}</p>
             <FaComments className="text-base" />
           </button>
-          {liking ? (
+          {liking || posterId === session.user.userId ? (
             <button
-              className="flex items-center font-bold  py-1 px-3 rounded text-green-500 hover:bg-green-500 hover:text-black-100 transition-all"
+              className="flex items-center font-bold  py-1 px-3 rounded text-green-500 hover:bg-green-500 hover:text-black-100 transition-all disabled:cursor-not-allowed"
               disabled
             >
-              <Loader />
+              <span>{likes}</span>
+              <BiLike className="text-base" />
             </button>
           ) : (
             <button
