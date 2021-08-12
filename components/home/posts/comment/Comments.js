@@ -18,6 +18,7 @@ const Comments = ({ postId, posterId, setCommentLength }) => {
 
   useEffect(() => {
     let theComments = [];
+    setLoading(true);
     const unsubscribe = db
       .collection("comments")
       .where("postId", "==", postId)
@@ -33,6 +34,7 @@ const Comments = ({ postId, posterId, setCommentLength }) => {
         });
         setComments(theComments);
         setCommentLength(theComments.length);
+        setLoading(false);
       });
 
     return () => {

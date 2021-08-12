@@ -6,13 +6,13 @@ import Spinner from "../../utils/Spinner";
 
 const Post = ({ setPostUpdated, postUpdated }) => {
   const [posts, setPosts] = useState([]);
+  //to trigger comment loading
+  const [loadComments, setLoadComments] = useState(false);
 
   const deletePost = (id) => {
     const newPosts = posts.filter((post) => post.postId !== id);
     setPosts(newPosts);
   };
-
-  console.log(posts);
 
   useEffect(() => {
     let thePosts = [];
@@ -28,6 +28,7 @@ const Post = ({ setPostUpdated, postUpdated }) => {
             deletePost(doc.id);
           }
         });
+        setLoadComments(!loadComments);
         setPosts(thePosts);
       });
 
@@ -35,6 +36,8 @@ const Post = ({ setPostUpdated, postUpdated }) => {
       unsubscribe();
     };
   }, [postUpdated]);
+
+  console.log(loadComments);
 
   if (!posts) {
     return (

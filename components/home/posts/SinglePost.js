@@ -3,11 +3,8 @@ import { FaComments } from "react-icons/fa";
 import { BiLike } from "react-icons/bi";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useSession } from "next-auth/client";
-import useSWR from "swr";
-import firebase from "firebase/app";
 
 import Comments from "./comment/Comments";
-import Loader from "../../utils/Loader";
 import { db } from "../../../firebase";
 
 const SinglePost = ({
@@ -24,6 +21,25 @@ const SinglePost = ({
   const user = session.user.userId;
 
   const [commentLength, setCommentLength] = useState(0);
+
+  useEffect(() => {
+    let theComments = [];
+    const unsubscribe = db
+      .collection("comments")
+      .where("postId", "==", postId)
+      .orderBy("timestamp", "desc")
+      .onSnapshot((snapshot) => {
+        snapshot.docChanges().forEach((change) => {
+          const doc = change.doc;
+          theComments.push({ ...doc.data(), theid: doc.id });
+        });
+        setCommentLength(theComments.length);
+      });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   useEffect(() => {
     const timeOut = setTimeout(() => {
