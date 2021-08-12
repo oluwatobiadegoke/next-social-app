@@ -1,13 +1,11 @@
-import { followers } from "../../Mapovers/followers";
-
-const AllUsers = () => {
+const AllUsers = ({ users }) => {
   return (
     <div className="w-full shadow-xl pr-2">
-      {followers.map((follower) => {
-        const { id, name, status } = follower;
+      {users.map((user) => {
+        const { userId, name } = user;
         return (
           <div
-            key={id}
+            key={userId}
             className="flex items-center justify-between w-full text-black-100 my-4 p-2 shadow-lg rounded-lg"
           >
             <div className="flex items-center">
@@ -18,13 +16,7 @@ const AllUsers = () => {
               </div>
               <p>{name}</p>
             </div>
-            <p
-              className={`${
-                status === "online" ? "text-green-500" : "text-red-500"
-              } text-sm`}
-            >
-              {status}
-            </p>
+            <p className="text-green-500 text-sm">Message</p>
           </div>
         );
       })}

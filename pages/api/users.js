@@ -1,6 +1,6 @@
 import { connectToDatabase } from "../../helpers/database";
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
   if (req.method !== "GET") {
     res.status(422).json({ response: "0", message: "Method not supported" });
     return;
@@ -25,6 +25,7 @@ export default function handler(req, res) {
       message: "Users fetched successfully",
       data: users,
     });
+    console.log(users);
   } catch (error) {
     res
       .status(500)

@@ -1,7 +1,21 @@
+import { useState, useEffect } from "react";
+import useSWR from "swr";
+
 import AllUsers from "./AllUsers";
 import Scroll from "../../utils/Scroll";
+import Spinner from "../../utils/Spinner";
 
 const Users = () => {
+  const [users, setUsers] = useState();
+
+  const { data: data, error } = useSWR("/api/users");
+
+  useEffect(() => {
+    if (data) {
+      setUsers(data.data);
+    }
+  }, [data]);
+
   return (
     <section className="col-span-2 mt-10">
       <Scroll>
@@ -11,7 +25,34 @@ const Users = () => {
         >
           <p className="text-black-100 font-bold">Users</p>
         </div>
-        <AllUsers />
+        {error ? (
+          <div className="mt-4 text-center px-4">
+            <p className="text-red-500 font-bold">
+              Sorry! Couldn't fetch users. Kindly check if you still have access
+              to network or/and please try again.
+            </p>
+          </div>
+        ) : (
+          <>
+            {!data || !users ? (
+              <div className="mt-4 flex justify-center">
+                <Spinner />
+              </div>
+            ) : (
+              <>
+                {data.length < 1 ? (
+                  <div className="mt-4 text-center px-4">
+                    <p className="text-red-500 font-bold">
+                      There are currently no users available.
+                    </p>
+                  </div>
+                ) : (
+                  <AllUsers users={users} />
+                )}
+              </>
+            )}
+          </>
+        )}
       </Scroll>
     </section>
   );
