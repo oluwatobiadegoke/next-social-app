@@ -1,37 +1,46 @@
-import useSWR from "swr";
 import { useState, useEffect } from "react";
 
 import Comment from "./Comment";
 import CommentInput from "./CommentInput";
 import Loader from "../../../utils/Loader";
+import { db } from "../../../../firebase";
 
-const Comments = ({ postId, posterId }) => {
-  const [comments, setComments] = useState();
+const Comments = ({ postId, posterId, setCommentLength }) => {
+  const [loading, setLoading] = useState(false);
+  const [comments, setComments] = useState([]);
+  //to update comment
+  const [commentUpdated, setCommentUpdated] = useState(false);
 
-  const {
-    data: data,
-    error,
-    mutate,
-  } = useSWR(`/api/comments/${postId}/${posterId}`);
+  const deletePost = (id) => {
+    const newComments = comments.filter((comment) => comment.commentId !== id);
+    setComments(newComments);
+  };
 
   useEffect(() => {
-    if (data) {
-      setComments(data);
-    }
-  }, [data]);
+    let theComments = [];
+    const unsubscribe = db
+      .collection("comments")
+      .where("postId", "==", postId)
+      .orderBy("timestamp", "desc")
+      .onSnapshot((snapshot) => {
+        snapshot.docChanges().forEach((change) => {
+          const doc = change.doc;
+          if (change.type === "added") {
+            theComments.push({ ...doc.data(), theid: doc.id });
+          } else if (change.type === "removed") {
+            deletePost(doc.id);
+          }
+        });
+        setComments(theComments);
+        setCommentLength(theComments.length);
+      });
 
-  if (error) {
-    return (
-      <div className="mt-4 text-center px-4">
-        <p className="text-red-500 font-bold">
-          Error! Couldn't fetch comments. Please refresh the page or try again
-          later
-        </p>
-      </div>
-    );
-  }
+    return () => {
+      unsubscribe();
+    };
+  }, [commentUpdated]);
 
-  if (!data) {
+  if (loading) {
     return (
       <div className="mt-4 flex flex-col justify-center">
         <div className="flex mb-4 items-center">
@@ -53,8 +62,17 @@ const Comments = ({ postId, posterId }) => {
 
   return (
     <div className="max-h-screen overflow-hidden">
-      <CommentInput postId={postId} posterId={posterId} />
-      <Comment comments={comments} mutate={mutate} />
+      <CommentInput
+        postId={postId}
+        posterId={posterId}
+        commentUpdated={commentUpdated}
+        setCommentUpdated={setCommentUpdated}
+      />
+      <Comment
+        comments={comments}
+        commentUpdated={commentUpdated}
+        setCommentUpdated={setCommentUpdated}
+      />
     </div>
   );
 };

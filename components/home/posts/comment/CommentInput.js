@@ -1,6 +1,17 @@
 import { useRef, useState, useEffect } from "react";
+import firebase from "firebase/app";
+import { v4 as uuidv4 } from "uuid";
+import { useSession } from "next-auth/client";
 
-const CommentInput = ({ postId, posterId }) => {
+import { db } from "../../../../firebase";
+
+const CommentInput = ({
+  postId,
+  posterId,
+  commentUpdated,
+  setCommentUpdated,
+}) => {
+  const [session] = useSession();
   const commentRef = useRef();
 
   const [posting, setPosting] = useState(false);
@@ -22,39 +33,34 @@ const CommentInput = ({ postId, posterId }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setPosting(true);
+    const commentId = uuidv4();
+    const params = {
+      commentId,
+      comment: commentRef.current.value,
+      posterId,
+      postId,
+      likes: 0,
+      poster: session.user.name,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    };
     if (commentRef.current.value.length) {
-      try {
-        fetch("/api/comment", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            postId: postId,
-            userId: posterId,
-            comment: commentRef.current.value,
-          }),
+      db.collection("comments")
+        .add(params)
+        .then(() => {
+          setCommentUpdated(!commentUpdated);
+          setIsMessageAvail(true);
+          setIsSuccess(true);
+          commentRef.current.value = "";
+          setMessage("Comment uploaded.");
         })
-          .then((response) => response.json())
-          .then((data) => {
-            if (data.response === "0") {
-              setIsError(true);
-              setIsSuccess(false);
-              setMessage(data.message);
-            } else {
-              setIsMessageAvail(true);
-              setIsSuccess(true);
-              commentRef.current.value = "";
-              setMessage("Comment uploaded.");
-            }
-            setPosting(false);
-          });
-      } catch (error) {
-        setPosting(false);
-        setIsMessageAvail(true);
-        setMessage("Couldn't put up your post. Please try again.");
-      }
+        .catch((err) => {
+          setIsError(true);
+          setIsSuccess(false);
+          setMessage("Couldn't upload comment.");
+        });
+      setPosting(false);
     } else {
+      setPosting(false);
       setIsError(true);
       setMessage("Write a comment...");
     }

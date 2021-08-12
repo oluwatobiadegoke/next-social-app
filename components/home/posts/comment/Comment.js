@@ -1,13 +1,13 @@
 import SingleComment from "./SingleComment";
-import Scroll from "../../../utils/Scroll";
 
 const Comment = (props) => {
-  const { comments, mutate, setComments } = props;
+  const { comments, mutate, setCommentUpdated, commentUpdated } = props;
 
   return (
     <div>
+      <p className="text-black-100 font-bold pl-4 mt-5">Comments</p>
       {comments.map((acomment) => {
-        const { postId, posterId, poster, commentId, comment, likes } =
+        const { postId, posterId, poster, commentId, comment, likes, theid } =
           acomment;
         return (
           <SingleComment
@@ -19,6 +19,9 @@ const Comment = (props) => {
             comment={comment}
             likes={likes}
             key={commentId}
+            docId={theid}
+            setCommentUpdated={setCommentUpdated}
+            commentUpdated={commentUpdated}
           />
         );
       })}

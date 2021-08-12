@@ -25,8 +25,6 @@ const SinglePost = ({
 
   const [commentLength, setCommentLength] = useState(0);
 
-  const { data: data, error } = useSWR(`/api/comments/${postId}/${posterId}`);
-
   useEffect(() => {
     const timeOut = setTimeout(() => {
       setIsError(false);
@@ -37,18 +35,6 @@ const SinglePost = ({
     };
   }, [isError, isMessageAvail]);
 
-  useEffect(() => {
-    if (data) {
-      setCommentLength(data?.data?.length);
-    } else {
-      setCommentLength(0);
-    }
-  }, [data]);
-
-  if (error) {
-    setCommentLength(0);
-  }
-
   const [wantToComment, setWantToComment] = useState(false);
   const [liking, setLiking] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -56,8 +42,6 @@ const SinglePost = ({
   const [isError, setIsError] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [message, setMessage] = useState("");
-
-  console.log(docId);
 
   const handleLike = (e) => {
     e.preventDefault();
@@ -168,7 +152,13 @@ const SinglePost = ({
             </>
           )}
         </div>
-        {wantToComment && <Comments postId={postId} posterId={user} />}
+        {wantToComment && (
+          <Comments
+            postId={postId}
+            posterId={user}
+            setCommentLength={setCommentLength}
+          />
+        )}
       </div>
     </div>
   );

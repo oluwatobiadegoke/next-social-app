@@ -3,14 +3,17 @@ import { BiLike } from "react-icons/bi";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useSession } from "next-auth/client";
 
+import { db } from "../../../../firebase";
+
 const SingleComment = ({
-  postId,
   posterId,
   poster,
   commentId,
   comment,
   likes,
-  mutate,
+  docId,
+  setCommentUpdated,
+  commentUpdated,
 }) => {
   const [session] = useSession();
   const userId = session.user.userId;
@@ -35,43 +38,52 @@ const SingleComment = ({
   const handleLike = (e) => {
     e.preventDefault();
     setLiking(true);
-    try {
-      fetch("/api/comment", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId: userId,
-          commentId: commentId,
-        }),
+    db.collection("comments")
+      .doc(docId)
+      .update({ likes: likes + 1 })
+      .then(() => {
+        setLiking(false);
+        setIsSuccess(true);
+        setIsError(false);
+        setMessage("Like added");
+        setCommentUpdated(!commentUpdated);
       })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.response === "0") {
-            setIsError(true);
-            setIsSuccess(false);
-            setMessage(data.message);
-          } else {
-            setIsMessageAvail(true);
-            setIsSuccess(true);
-            setMessage("Post liked.");
-            // mutate({
-            //   ...data,
-            //   likes: likes + 1,
-            // });
-          }
-          setLiking(false);
+      .catch((error) => {
+        console.log(error);
+        setIsError(true);
+        setIsSuccess(false);
+        setMessage("Comment not liked.");
+        setLiking(false);
+      });
+  };
+
+  const handleDelete = (e) => {
+    e.preventDefault();
+    setDeleting(true);
+    const postQuery = db
+      .collection("comments")
+      .where("commentId", "==", commentId);
+    postQuery
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          doc.ref.delete();
+          setIsSuccess(true);
+          setDeleting(false);
+          setCommentUpdated(!commentUpdated);
         });
-    } catch (error) {
-      setLiking(false);
-      setIsMessageAvail(true);
-      setMessage("Couldn't put up your post. Please try again.");
-    }
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsError(true);
+        setIsMessageAvail(true);
+        setMessage("Couldn't delete comment. Please try again.");
+        setDeleting(false);
+      });
   };
   return (
-    <div className="shadow-2xl bg-indigo-800 text-black-100 rounded-lg px-4 py-7 my-6 text-sm">
-      <div className="bg-indigo-800 flex items-center border-b border-indigo-700 pb-1">
+    <div className="shadow-2xl bg-indigo-700 text-black-100 rounded-lg px-4 py-7 my-6 text-sm">
+      <div className="bg-indigo-700 flex items-center border-b border-indigo-800 pb-1">
         <div className="w-5 h-5 rounded-full flex items-center justify-center bg-indigo-600 mr-3">
           <p>{poster.slice(0, 1).toUpperCase()}</p>
         </div>
@@ -79,7 +91,7 @@ const SingleComment = ({
       </div>
       <div>
         <p className="py-2">{comment}</p>
-        <div className="h-h w-full bg-indigo-700"></div>
+        <div className="h-h w-full bg-indigo-800"></div>
         {(isError || isMessageAvail) && (
           <div
             className={`bg-transparent ${
@@ -96,8 +108,7 @@ const SingleComment = ({
               disabled
             >
               <span>{likes}</span>
-              <p className="mx-1">Like(s)</p>
-              <BiLike className="text-base" />
+              <BiLike className="text-base ml-1" />
             </button>
           ) : (
             <button
@@ -105,8 +116,7 @@ const SingleComment = ({
               onClick={(e) => handleLike(e)}
             >
               <span>{likes}</span>
-              <p className="mx-1">Like(s)</p>
-              <BiLike className="text-base" />
+              <BiLike className="text-base ml-1" />
             </button>
           )}
           {session?.user?.userId === posterId && (
