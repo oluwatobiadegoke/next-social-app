@@ -6,8 +6,7 @@ import Loader from "../../../utils/Loader";
 import { db } from "../../../../firebase";
 
 const Comments = ({ postId, posterId, setCommentLength }) => {
-  const [loading, setLoading] = useState(false);
-  const [comments, setComments] = useState([]);
+  const [comments, setComments] = useState();
   //to update comment
   const [commentUpdated, setCommentUpdated] = useState(false);
 
@@ -18,31 +17,33 @@ const Comments = ({ postId, posterId, setCommentLength }) => {
 
   useEffect(() => {
     let theComments = [];
-    setLoading(true);
-    const unsubscribe = db
-      .collection("comments")
-      .where("postId", "==", postId)
-      .orderBy("timestamp", "desc")
-      .onSnapshot((snapshot) => {
-        snapshot.docChanges().forEach((change) => {
-          const doc = change.doc;
-          if (change.type === "added") {
-            theComments.push({ ...doc.data(), theid: doc.id });
-          } else if (change.type === "removed") {
-            deletePost(doc.id);
-          }
+    try {
+      const unsubscribe = db
+        .collection("comments")
+        .where("postId", "==", postId)
+        .orderBy("timestamp", "desc")
+        .onSnapshot((snapshot) => {
+          snapshot.docChanges().forEach((change) => {
+            const doc = change.doc;
+            if (change.type === "added") {
+              theComments.push({ ...doc.data(), theid: doc.id });
+            } else if (change.type === "removed") {
+              deletePost(doc.id);
+            }
+          });
+          setComments(theComments);
+          setCommentLength(theComments.length);
         });
-        setComments(theComments);
-        setCommentLength(theComments.length);
-        setLoading(false);
-      });
 
-    return () => {
-      unsubscribe();
-    };
+      return () => {
+        unsubscribe();
+      };
+    } catch (error) {
+      setComments([]);
+    }
   }, [commentUpdated]);
 
-  if (loading) {
+  if (!comments) {
     return (
       <div className="mt-4 flex flex-col justify-center">
         <div className="flex mb-4 items-center">

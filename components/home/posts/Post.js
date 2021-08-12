@@ -5,9 +5,7 @@ import Posts from "./Posts";
 import Spinner from "../../utils/Spinner";
 
 const Post = ({ setPostUpdated, postUpdated }) => {
-  const [posts, setPosts] = useState([]);
-  //to trigger comment loading
-  const [loadComments, setLoadComments] = useState(false);
+  const [posts, setPosts] = useState();
 
   const deletePost = (id) => {
     const newPosts = posts.filter((post) => post.postId !== id);
@@ -16,28 +14,28 @@ const Post = ({ setPostUpdated, postUpdated }) => {
 
   useEffect(() => {
     let thePosts = [];
-    const unsubscribe = db
-      .collection("posts")
-      .orderBy("timestamp", "desc")
-      .onSnapshot((snapshot) => {
-        snapshot.docChanges().forEach((change) => {
-          const doc = change.doc;
-          if (change.type === "added") {
-            thePosts.push({ ...doc.data(), theid: doc.id });
-          } else if (change.type === "removed") {
-            deletePost(doc.id);
-          }
+    try {
+      const unsubscribe = db
+        .collection("posts")
+        .orderBy("timestamp", "desc")
+        .onSnapshot((snapshot) => {
+          snapshot.docChanges().forEach((change) => {
+            const doc = change.doc;
+            if (change.type === "added") {
+              thePosts.push({ ...doc.data(), theid: doc.id });
+            } else if (change.type === "removed") {
+              deletePost(doc.id);
+            }
+          });
+          setPosts(thePosts);
         });
-        setLoadComments(!loadComments);
-        setPosts(thePosts);
-      });
-
-    return () => {
-      unsubscribe();
-    };
+      return () => {
+        unsubscribe();
+      };
+    } catch (error) {
+      setPosts([]);
+    }
   }, [postUpdated]);
-
-  console.log(loadComments);
 
   if (!posts) {
     return (
