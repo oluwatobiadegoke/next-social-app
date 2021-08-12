@@ -1,6 +1,6 @@
 import { followers } from "../../Mapovers/followers";
 
-const Allfollowers = () => {
+const AllUsers = () => {
   return (
     <div className="w-full shadow-xl pr-2">
       {followers.map((follower) => {
@@ -32,4 +32,4 @@ const Allfollowers = () => {
   );
 };
 
-export default Allfollowers;
+export default AllUsers;

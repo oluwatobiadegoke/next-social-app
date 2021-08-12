@@ -3,7 +3,7 @@ import { useSession } from "next-auth/client";
 
 import Sidemenu from "./sidemenu/Sidemenu";
 import Topbar from "./navbar/Topbar";
-import Followers from "./followers/Followers";
+import Users from "./users/Users";
 
 const Layout = (props) => {
   const [session] = useSession();
@@ -15,7 +15,7 @@ const Layout = (props) => {
         <section className={`${session ? "col-span-3 my-5" : "col-span-7"}`}>
           {props.children}
         </section>
-        {session && <Followers />}
+        {session && <Users />}
       </main>
     </Fragment>
   );
