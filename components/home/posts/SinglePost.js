@@ -90,8 +90,8 @@ const SinglePost = ({
   return (
     <div className="shadow-2xl bg-indigo-800 text-black-100 rounded-lg px-4 py-5 my-6 text-sm">
       <div className="bg-indigo-800 flex items-center border-b border-indigo-700 pb-1">
-        <div className="w-10 h-10 rounded-full flex items-center justify-center bg-white mr-3">
-          <p>A</p>
+        <div className="w-10 h-10 rounded-full flex items-center justify-center bg-indigo-700 shadow mr-3">
+          <p>{poster.slice(0, 1).toUpperCase()}</p>
         </div>
         <p>{poster}</p>
       </div>
