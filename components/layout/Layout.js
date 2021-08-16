@@ -4,9 +4,13 @@ import { useSession } from "next-auth/client";
 import Sidemenu from "./sidemenu/Sidemenu";
 import Topbar from "./navbar/Topbar";
 import Users from "./users/Users";
+import { useGlobalChatContext } from "../../state/chatContext/chatContext";
+import Chat from "./Chat";
 
 const Layout = (props) => {
   const [session] = useSession();
+
+  const { loadMessages } = useGlobalChatContext();
   return (
     <Fragment>
       {session && <Topbar />}
@@ -16,6 +20,7 @@ const Layout = (props) => {
           {props.children}
         </section>
         {session && <Users />}
+        {loadMessages && <Chat />}
       </main>
     </Fragment>
   );

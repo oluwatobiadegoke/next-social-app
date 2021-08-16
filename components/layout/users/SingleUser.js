@@ -4,12 +4,12 @@ import { useSession } from "next-auth/client";
 
 import { db } from "../../../firebase";
 
-const SingleUser = ({ userId, name, email }) => {
+const SingleUser = ({ userId, name }) => {
   const [session] = useSession();
-  const user = session.user.email;
+  const user = session.user.name;
 
   const [snapshot] = useCollectionOnce(
-    db.collection("chats").where("users", "array-contains", email)
+    db.collection("chats").where("users", "array-contains", name)
   );
 
   const checkIfAlreadyInChat = (chatWith) => {
@@ -43,7 +43,7 @@ const SingleUser = ({ userId, name, email }) => {
       </div>
       <button
         className="text-green-500 text-2xl mr-4"
-        onClick={() => createChat(email)}
+        onClick={() => createChat(name)}
       >
         <IoChatbubblesOutline />
       </button>
