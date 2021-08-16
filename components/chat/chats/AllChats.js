@@ -1,10 +1,10 @@
-import { GrFormNext } from "react-icons/gr";
+import { BsChatDots } from "react-icons/bs";
 
 const AllChats = ({ name }) => {
   return (
-    <div>
+    <div className="flex justify-between items-center mx-0 my-2 py-3 px-2 bg-indigo-800 rounded transition-all hover:mx-1 hover:py-2 cursor-pointer">
       <p>{name}</p>
-      <GrFormNext />
+      <BsChatDots className="text-black-100" />
     </div>
   );
 };

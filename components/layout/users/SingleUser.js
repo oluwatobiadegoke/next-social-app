@@ -3,10 +3,13 @@ import { useCollectionOnce } from "react-firebase-hooks/firestore";
 import { useSession } from "next-auth/client";
 
 import { db } from "../../../firebase";
+import { useGlobalChatContext } from "../../../state/chatContext/chatContext";
 
 const SingleUser = ({ userId, name }) => {
   const [session] = useSession();
   const user = session.user.name;
+
+  const { setLoadMessages } = useGlobalChatContext();
 
   const [snapshot] = useCollectionOnce(
     db.collection("chats").where("users", "array-contains", name)
@@ -25,6 +28,7 @@ const SingleUser = ({ userId, name }) => {
       db.collection("chats").add({
         user: [user, chatWith],
       });
+      setLoadMessages(true);
     }
   };
 

@@ -14,13 +14,13 @@ const Layout = (props) => {
   return (
     <Fragment>
       {session && <Topbar />}
-      <main className="main grid grid-cols-7 relative bg-indigo-800">
+      <main className="main grid grid-cols-7 relative bg-indigo-800 overflow-hidden">
         {session && <Sidemenu />}
         <section className={`${session ? "col-span-3 my-5" : "col-span-7"}`}>
           {props.children}
         </section>
         {session && <Users />}
-        {loadMessages && <Chat />}
+        <Chat />
       </main>
     </Fragment>
   );

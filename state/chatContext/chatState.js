@@ -8,7 +8,7 @@ const ChatProvider = ({ children }) => {
 
   return (
     <ChatContext.Provider
-      value={(isChatting, setIsChatting, loadMessages, setLoadMessages)}
+      value={{ isChatting, setIsChatting, loadMessages, setLoadMessages }}
     >
       {children}
     </ChatContext.Provider>
