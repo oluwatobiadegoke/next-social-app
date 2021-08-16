@@ -32,11 +32,25 @@ export default async function helper(req, res) {
 
   const db = client.db();
 
-  const existingUser = await db.collection("users").findOne({ email });
+  const existingEmail = await db.collection("users").findOne({ email });
+  const existingUsername = await db.collection("users").findOne({ name });
 
-  if (existingUser) {
+  if (existingUsername) {
     client.close();
-    res.status(422).json({ response: "0", message: "User already exists" });
+    res
+      .status(422)
+      .json({
+        response: "0",
+        message: "User with the username already exists",
+      });
+    return;
+  }
+
+  if (existingEmail) {
+    client.close();
+    res
+      .status(422)
+      .json({ response: "0", message: "User with email already exists" });
     return;
   }
 
