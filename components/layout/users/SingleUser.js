@@ -12,7 +12,7 @@ const SingleUser = ({ userId, name }) => {
   const { setLoadMessages } = useGlobalChatContext();
 
   const [snapshot] = useCollectionOnce(
-    db.collection("chats").where("users", "array-contains", name)
+    db.collection("chats").where("users", "array-contains", user)
   );
 
   const checkIfAlreadyInChat = (chatWith) => {

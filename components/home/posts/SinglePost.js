@@ -52,6 +52,7 @@ const SinglePost = ({
   }, [isError, isMessageAvail]);
 
   const [wantToComment, setWantToComment] = useState(false);
+  const [liked, setLiked] = useState(false);
   const [liking, setLiking] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [isMessageAvail, setIsMessageAvail] = useState(false);
@@ -71,6 +72,29 @@ const SinglePost = ({
         setIsError(false);
         setMessage("Like added");
         setPostUpdated(!postUpdated);
+        setLiked(true);
+      })
+      .catch((error) => {
+        setIsError(true);
+        setIsSuccess(false);
+        setMessage("Post not liked.");
+        setLiking(false);
+      });
+  };
+
+  const handleUnLike = (e) => {
+    e.preventDefault();
+    setLiking(true);
+    db.collection("posts")
+      .doc(docId)
+      .update({ likes: likes - 1 })
+      .then(() => {
+        setLiking(false);
+        setIsSuccess(true);
+        setIsError(false);
+        setMessage("Like added");
+        setPostUpdated(!postUpdated);
+        setLiked(false);
       })
       .catch((error) => {
         setIsError(true);
@@ -140,13 +164,25 @@ const SinglePost = ({
               <BiLike className="text-base" />
             </button>
           ) : (
-            <button
-              className="flex items-center font-bold  py-1 px-3 rounded text-green-500 hover:bg-green-500 hover:text-black-100 transition-all"
-              onClick={(e) => handleLike(e)}
-            >
-              <span>{likes}</span>
-              <BiLike className="text-base" />
-            </button>
+            <>
+              {!liked ? (
+                <button
+                  className="flex items-center font-bold  py-1 px-3 rounded text-green-500 hover:bg-green-500 hover:text-black-100 transition-all"
+                  onClick={(e) => handleLike(e)}
+                >
+                  <span>{likes}</span>
+                  <BiLike className="text-base" />
+                </button>
+              ) : (
+                <button
+                  className="flex items-center font-bold  py-1 px-3 rounded text-green-500 hover:bg-green-500 hover:text-black-100 transition-all"
+                  onClick={(e) => handleUnLike(e)}
+                >
+                  <span>{likes}</span>
+                  <BiLike className="text-base" />
+                </button>
+              )}
+            </>
           )}
           {session?.user?.userId === posterId && (
             <>

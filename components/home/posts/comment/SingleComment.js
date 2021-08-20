@@ -19,6 +19,7 @@ const SingleComment = ({
   const userId = session.user.userId;
 
   const [liking, setLiking] = useState(false);
+  const [liked, setLiked] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [isMessageAvail, setIsMessageAvail] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -47,12 +48,36 @@ const SingleComment = ({
         setIsError(false);
         setMessage("Like added");
         setCommentUpdated(!commentUpdated);
+        setLiked(true);
       })
       .catch((error) => {
         console.log(error);
         setIsError(true);
         setIsSuccess(false);
         setMessage("Comment not liked.");
+        setLiking(false);
+      });
+  };
+
+  const handleUnLike = (e) => {
+    e.preventDefault();
+    setLiking(true);
+    db.collection("comments")
+      .doc(docId)
+      .update({ likes: likes - 1 })
+      .then(() => {
+        setLiking(false);
+        setIsSuccess(true);
+        setIsError(false);
+        setMessage("Like added");
+        setCommentUpdated(!commentUpdated);
+        setLiked(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsError(true);
+        setIsSuccess(false);
+        setMessage("Comment not unliked.");
         setLiking(false);
       });
   };
@@ -111,13 +136,25 @@ const SingleComment = ({
               <BiLike className="text-base ml-1" />
             </button>
           ) : (
-            <button
-              className="flex items-center font-bold  py-1 px-3 rounded text-green-500 hover:bg-green-500 hover:text-black-100 transition-all"
-              onClick={(e) => handleLike(e)}
-            >
-              <span>{likes}</span>
-              <BiLike className="text-base ml-1" />
-            </button>
+            <>
+              {!liked ? (
+                <button
+                  className="flex items-center font-bold  py-1 px-3 rounded text-green-500 hover:bg-green-500 hover:text-black-100 transition-all"
+                  onClick={(e) => handleLike(e)}
+                >
+                  <span>{likes}</span>
+                  <BiLike className="text-base ml-1" />
+                </button>
+              ) : (
+                <button
+                  className="flex items-center font-bold  py-1 px-3 rounded text-green-500 hover:bg-green-500 hover:text-black-100 transition-all"
+                  onClick={(e) => handleUnLike(e)}
+                >
+                  <span>{likes}</span>
+                  <BiLike className="text-base ml-1" />
+                </button>
+              )}
+            </>
           )}
           {session?.user?.userId === posterId && (
             <>
