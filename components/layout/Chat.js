@@ -2,7 +2,7 @@ import { MdMessage } from "react-icons/md";
 
 import { useGlobalChatContext } from "../../state/chatContext/chatContext";
 import Messages from "../chat/indMessages/Messages";
-import Chats from "../chat/indMessages/Chats";
+import Chats from "../chat/chats/Chats";
 
 const Chat = () => {
   const { loadMessages, setLoadMessages } = useGlobalChatContext();

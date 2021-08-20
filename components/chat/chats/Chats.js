@@ -1,4 +1,4 @@
-import Chat from "../chats/Chat";
+import Chat from "./Chat";
 
 const Chats = () => {
   return (

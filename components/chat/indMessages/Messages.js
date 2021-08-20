@@ -1,5 +1,4 @@
 import MessageInfo from "./MessageInfo";
-import Chats from "./Chats";
 
 const Messages = () => {
   return (
