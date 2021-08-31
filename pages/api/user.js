@@ -14,11 +14,6 @@ cloudinary.config({
 const handler = nc()
   .use(upload.single("profilePicture"))
   .patch(async (req, res) => {
-    if (req.method !== "PATCH") {
-      res.status(422).json({ response: "0", message: "Method not supported" });
-      return;
-    }
-
     let profilePicture;
     if (req.file) {
       const image = await cloudinary.uploader.upload(req.file.path, {
