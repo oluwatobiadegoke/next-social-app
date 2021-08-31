@@ -7,6 +7,10 @@ import { db } from "../../firebase";
 
 const ChatProvider = ({ children }) => {
   const [session] = useSession();
+  const user = session ? session.user.name : "";
+
+  //To help the messages scroll back down
+  const [scrollDown, setScrollDown] = useState(true);
 
   //To bring up the messages components
   const [loadMessages, setLoadMessages] = useState(false);
@@ -15,7 +19,7 @@ const ChatProvider = ({ children }) => {
   const [chats, setChats] = useState();
 
   const [snapshot, error] = useCollection(
-    db.collection("chats").where("user", "array-contains", session.user.name)
+    db.collection("chats").where("user", "array-contains", user)
   );
 
   useEffect(() => {
@@ -31,6 +35,8 @@ const ChatProvider = ({ children }) => {
         setLoadMessages,
         chats,
         error,
+        scrollDown,
+        setScrollDown,
       }}
     >
       {children}

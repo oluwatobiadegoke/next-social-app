@@ -1,11 +1,53 @@
-import React from "react";
+import { useSession } from "next-auth/client";
 
-const ChatMessages = () => {
+import Messages from "../../components/chat/indMessages/Messages";
+import { db } from "../../firebase";
+import getRecipientName from "../../components/utils/getRecipientName";
+
+const ChatMessages = ({ messages, chat }) => {
+  const [session] = useSession();
+
+  const chatWith = getRecipientName(chat.user, session.user.name);
+
   return (
     <div>
-      <p>This is a message page</p>
+      <Messages chatWith={chatWith} messages={messages} />
     </div>
   );
 };
 
 export default ChatMessages;
+
+export async function getServerSideProps(context) {
+  const ref = db.collection("chats").doc(context.params.id);
+
+  const mesResponse = await ref
+    .collection("messages")
+    .orderBy("timestamp", "asc")
+    .get();
+
+  const messages = mesResponse.docs
+    .map((doc) => {
+      return {
+        id: doc.id,
+        ...doc.data(),
+      };
+    })
+    .map((messages) => ({
+      ...messages,
+      timestamp: messages.timestamp.toDate().getTime(),
+    }));
+
+  const chatResponse = await ref.get();
+  const chat = {
+    id: chatResponse.id,
+    ...chatResponse.data(),
+  };
+
+  return {
+    props: {
+      messages: JSON.stringify(messages),
+      chat,
+    },
+  };
+}
