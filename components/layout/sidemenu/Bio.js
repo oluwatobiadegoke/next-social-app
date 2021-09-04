@@ -1,13 +1,14 @@
 import { useSession } from "next-auth/client";
 import { CgBoy } from "react-icons/cg";
 import { FiInfo } from "react-icons/fi";
+import Image from "next/image";
 
 const Bio = () => {
   const [session] = useSession();
   return (
     <div className="flex flex-col items-center mt-10 mb-4">
-      <div className="w-32 h-32 rounded-full flex items-center justify-center bg-indigo-800 shadow-2xl mb-4">
-        {!session?.user?.image === undefined ? (
+      <div className="w-32 h-32 profileDiv">
+        {!session?.user?.image === "undefined" ? (
           <Image
             width={64}
             height={64}

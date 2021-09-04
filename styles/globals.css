@@ -31,3 +31,27 @@
 .main {
   height: calc(100vh - 64px);
 }
+
+.profileDiv {
+  @apply rounded-full flex items-center justify-center bg-indigo-800 shadow-2xl mb-4 overflow-hidden;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.profileUpdateFormCont {
+  @apply w-full flex items-center bg-indigo-700 h-10 rounded-full px-4;
+}
+
+.profileUpdateLabel {
+  @apply w-14 text-black-100 mr-2;
+}
+
+.profileUpdateInput {
+  @apply flex-1 bg-transparent ml-2 outline-none border-none text-black-100;
+}
+
+.breaker {
+  @apply h-3/4 w-w bg-black-300;
+}

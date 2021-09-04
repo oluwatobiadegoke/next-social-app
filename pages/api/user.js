@@ -13,7 +13,7 @@ cloudinary.config({
 
 const handler = nc()
   .use(upload.single("profilePicture"))
-  .patch(async (req, res) => {
+  .put(async (req, res) => {
     let profilePicture;
     if (req.file) {
       const image = await cloudinary.uploader.upload(req.file.path, {
@@ -54,7 +54,6 @@ const handler = nc()
         message: "Profile updated",
         data: users,
       });
-      console.log(users);
     } catch (error) {
       res
         .status(500)
