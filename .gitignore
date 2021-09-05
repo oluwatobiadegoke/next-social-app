@@ -32,3 +32,9 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+#cloudinary config values
+cloudinaryConfig.js
+
+#firebase config values
+firebaseConfig.js

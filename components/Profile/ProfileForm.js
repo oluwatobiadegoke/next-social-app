@@ -11,6 +11,7 @@ const ProfileForm = () => {
   const [msg, setMsg] = useState("");
   const [isMessageAvail, setIsMessageAvail] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -23,7 +24,7 @@ const ProfileForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    setLoading(true);
     try {
       const formData = new FormData();
       formData.append("name", nameRef.current.value);
@@ -35,14 +36,10 @@ const ProfileForm = () => {
       fetch("/api/user", {
         method: "PUT",
         body: formData,
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
       })
         .then((response) => JSON.parse(JSON.stringify(response)))
         .then((data) => {
-          console.log(data);
-          if (data.response === "0") {
+          if (data.response !== "1") {
             setIsError(true);
             setMsg("Profile not updated");
           } else {
@@ -50,11 +47,13 @@ const ProfileForm = () => {
             setIsError(false);
             setMsg("Profile updated");
           }
+          setLoading(false);
         });
     } catch (error) {
       console.log(error);
       setIsError(true);
       setMsg("Profile not updated");
+      setLoading(false);
     }
   };
 
@@ -121,10 +120,13 @@ const ProfileForm = () => {
         </div>
         <div className="w-full flex justify-center mt-4">
           <button
-            className="bg-green-800 px-4 py-1 text-white rounded-full"
+            className={`bg-green-800 px-4 py-1 text-white rounded-full ${
+              loading && "bg-green-600 disabled:cursor-not-allowed "
+            }`}
             onClick={(e) => handleSubmit(e)}
+            disabled={loading ? true : false}
           >
-            Submit
+            {loading ? "Submitting" : "Submit"}
           </button>
         </div>
       </div>

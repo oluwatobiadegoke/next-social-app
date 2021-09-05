@@ -1,26 +1,41 @@
 import { connectToDatabase } from "../../helpers/database";
-import nc from "next-connect";
-import multer from "multer";
 import { v2 as cloudinary } from "cloudinary";
+import formidable from "formidable";
 
-const upload = multer({ dest: "/tmp" });
+import { cloudinaryConfig } from "../../cloudinaryConfig";
 
-cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
+cloudinary.config(cloudinaryConfig);
 
-const handler = nc()
-  .use(upload.single("profilePicture"))
-  .put(async (req, res) => {
-    let profilePicture;
-    if (req.file) {
-      const image = await cloudinary.uploader.upload(req.file.path, {
-        width: 512,
-        height: 512,
-        crop: "fill",
-      });
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+
+const handler = async (req, res) => {
+  if (req.method !== "PUT") {
+    return res.status(402).json({ message: "Method not allowed" });
+  }
+  let profilePicture;
+  const form = new formidable.IncomingForm();
+  form.uploadDir = "./";
+  form.keepExtensions = true;
+  form.parse(req, async (err, fields, files) => {
+    const { name, bio, userId } = fields;
+    if (files) {
+      const image = await cloudinary.uploader.upload(
+        files.profilePicture.path,
+        {
+          width: 512,
+          height: 512,
+          crop: "fill",
+        },
+        function (error) {
+          if (error) {
+            res.status(404).json({ message: "Error uploading image" });
+          }
+        }
+      );
       profilePicture = image.secure_url;
     }
 
@@ -33,8 +48,6 @@ const handler = nc()
         .json({ response: "0", message: "Error connecting to database" });
       return;
     }
-
-    const { name, bio, userId } = req.body;
 
     try {
       const db = client.db("xpress");
@@ -62,10 +75,14 @@ const handler = nc()
     }
   });
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
+  // if (req.file) {
+  //   const image = await cloudinary.uploader.upload(req.file.path, {
+  //     width: 512,
+  //     height: 512,
+  //     crop: "fill",
+  //   });
+  //   profilePicture = image.secure_url;
+  // }
 };
 
 export default handler;

@@ -25,7 +25,6 @@ export default async function handler(req, res) {
       message: "Users fetched successfully",
       data: users,
     });
-    console.log(users);
   } catch (error) {
     res
       .status(500)
