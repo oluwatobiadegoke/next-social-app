@@ -53,24 +53,3 @@ export default NextAuth({
     }),
   ],
 });
-
-// const { userId } = user;
-// // session.user.userId = userId;
-// const newSession = session;
-
-// try {
-//   const respose = await fetch(`api/user/${userId}`, {
-//     method: "GET",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//   });
-//   if (respose.status === 200) {
-//     const user = await respose.json();
-//     const { data } = user;
-//     newSession.user = data;
-//   }
-// } catch (error) {
-//   console.log(error);
-// }
-// return Promise.resolve(newSession);
