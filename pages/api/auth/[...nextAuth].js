@@ -8,7 +8,7 @@ export default NextAuth({
     jwt: true,
   },
   callbacks: {
-    jwt: async (token, user, account, profile, isNewUser) => {
+    jwt: async (token, user) => {
       if (user) {
         token.userId = user.userId;
         token.profilePicture = user.profilePicture;
