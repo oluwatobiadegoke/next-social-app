@@ -13,9 +13,39 @@ export const config = {
 };
 
 const handler = async (req, res) => {
-  if (req.method !== "PUT") {
+  if (req.method !== "PUT" || "GET") {
     return res.status(402).json({ message: "Method not allowed" });
   }
+
+  if (req.method === "GET") {
+    const { userId } = req.query;
+
+    let client;
+    try {
+      client = await connectToDatabase();
+    } catch (error) {
+      res
+        .status(500)
+        .json({ response: "0", message: "Error connecting to database" });
+      return;
+    }
+
+    try {
+      const db = client.db("xpress");
+      const user = await db.collection("users").findOne({ userId });
+      client.close();
+      res.status(200).json({
+        response: "1",
+        message: "User fetched",
+        data: user,
+      });
+    } catch (error) {
+      client.close();
+      res.status(500).json({ response: "0", message: "Error fetching user" });
+      return;
+    }
+  }
+
   let profilePicture;
   const form = new formidable.IncomingForm();
   form.uploadDir = "./";
@@ -29,11 +59,6 @@ const handler = async (req, res) => {
           width: 512,
           height: 512,
           crop: "fill",
-        },
-        function (error) {
-          if (error) {
-            res.status(404).json({ message: "Error uploading image" });
-          }
         }
       );
       profilePicture = image.secure_url;
@@ -61,11 +86,12 @@ const handler = async (req, res) => {
           },
         }
       );
+      const user = await db.collection("users").findOne({ userId });
       client.close();
       res.status(200).json({
         response: "1",
         message: "Profile updated",
-        data: users,
+        data: user,
       });
     } catch (error) {
       res

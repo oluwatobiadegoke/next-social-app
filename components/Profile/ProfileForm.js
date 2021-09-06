@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import { useSession } from "next-auth/client";
+import { useSession, getSession } from "next-auth/client";
 
 const ProfileForm = () => {
   const [session] = useSession();
@@ -37,8 +37,9 @@ const ProfileForm = () => {
         method: "PUT",
         body: formData,
       })
-        .then((response) => JSON.parse(JSON.stringify(response)))
+        .then((response) => response.json())
         .then((data) => {
+          console.log(data);
           if (data.response !== "1") {
             setIsError(true);
             setMsg("Profile not updated");
@@ -46,6 +47,7 @@ const ProfileForm = () => {
             setIsMessageAvail(true);
             setIsError(false);
             setMsg("Profile updated");
+            getSession();
           }
           setLoading(false);
         });

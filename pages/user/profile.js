@@ -10,11 +10,11 @@ const profile = () => {
     <section>
       <div className="w-full flex justify-center">
         <div className="w-64 h-64 profileDiv">
-          {!session?.user.image === "undefined" ? (
+          {session?.user.profilePicture ? (
             <Image
-              src={session.user.image}
-              width={64}
-              height={64}
+              src={session.user.profilePicture}
+              width={256}
+              height={256}
               alt={session.user.name}
             />
           ) : (

@@ -1,4 +1,4 @@
-import { getSession } from "next-auth/client";
+import { getSession, useSession } from "next-auth/client";
 import { useState } from "react";
 
 import PostInput from "../../../components/home/postinput/PostInput";
@@ -7,6 +7,8 @@ import Scroll from "../../../components/utils/Scroll";
 
 const index = () => {
   const [postUpdated, setPostUpdated] = useState(false);
+  const [session] = useSession();
+  console.log(session.user);
 
   return (
     <Scroll>

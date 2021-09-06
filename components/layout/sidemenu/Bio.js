@@ -8,11 +8,11 @@ const Bio = () => {
   return (
     <div className="flex flex-col items-center mt-10 mb-4">
       <div className="w-32 h-32 profileDiv">
-        {!session?.user?.image === "undefined" ? (
+        {session?.user?.profilePicture ? (
           <Image
-            width={64}
-            height={64}
-            src={session?.user?.image}
+            width={128}
+            height={128}
+            src={session?.user?.profilePicture}
             alt="image"
           />
         ) : (
@@ -30,7 +30,7 @@ const Bio = () => {
       <div className="flex items-center">
         <FiInfo className="text-base text-black-100" />
         <p className="text-black-100 text-sm font-bold ml-2">
-          I'm a God fearing person.
+          {session?.user?.bio}
         </p>
       </div>
     </div>

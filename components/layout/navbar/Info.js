@@ -9,12 +9,12 @@ const Info = () => {
       <Link href="/profile">
         <p className="text-black-100 font-bold">{session?.user?.name}</p>
       </Link>
-      <div className="w-11 h-11 rounded-full flex items-center justify-center bg-indigo-800 drop-shadow-xl ml-4">
-        {!session?.user?.image === undefined ? (
+      <div className="w-11 h-11 rounded-full flex items-center justify-center bg-indigo-800 drop-shadow-xl ml-4 overflow-hidden">
+        {session?.user?.profilePicture ? (
           <Image
             width={44}
             height={44}
-            src={session?.user?.image}
+            src={session?.user?.profilePicture}
             alt="image"
           />
         ) : (

@@ -11,11 +11,15 @@ export default NextAuth({
     jwt: async (token, user, account, profile, isNewUser) => {
       if (user) {
         token.userId = user.userId;
+        token.profilePicture = user.profilePicture;
+        token.bio = user.bio;
       }
       return Promise.resolve(token);
     },
     session: async (session, user) => {
       session.user.userId = user.userId;
+      session.user.profilePicture = user.profilePicture;
+      session.user.bio = user.bio;
       return Promise.resolve(session);
     },
   },
@@ -49,3 +53,24 @@ export default NextAuth({
     }),
   ],
 });
+
+// const { userId } = user;
+// // session.user.userId = userId;
+// const newSession = session;
+
+// try {
+//   const respose = await fetch(`api/user/${userId}`, {
+//     method: "GET",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//   });
+//   if (respose.status === 200) {
+//     const user = await respose.json();
+//     const { data } = user;
+//     newSession.user = data;
+//   }
+// } catch (error) {
+//   console.log(error);
+// }
+// return Promise.resolve(newSession);
