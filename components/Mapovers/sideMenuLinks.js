@@ -1,4 +1,4 @@
-import { FiHome, FiSettings } from "react-icons/fi";
+import { FiHome } from "react-icons/fi";
 import { CgProfile } from "react-icons/cg";
 
 export const links = [
@@ -13,11 +13,5 @@ export const links = [
     name: "Profile",
     path: "/user/profile",
     icon: <CgProfile className="text-black-100 text-xl" />,
-  },
-  {
-    id: 3,
-    name: "Settings",
-    path: "/user/settings",
-    icon: <FiSettings className="text-black-100 text-xl" />,
   },
 ];
