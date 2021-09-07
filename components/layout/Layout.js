@@ -2,6 +2,7 @@ import { Fragment, useState } from "react";
 import { useSession } from "next-auth/client";
 import { CgMenuGridO } from "react-icons/cg";
 import { FiUsers } from "react-icons/fi";
+import { useRouter } from "next/router";
 
 import Sidemenu from "./sidemenu/Sidemenu";
 import Topbar from "./navbar/Topbar";
@@ -10,6 +11,9 @@ import Chat from "./Chat";
 
 const Layout = (props) => {
   const [session] = useSession();
+  const router = useRouter();
+
+  console.log(router.pathname);
 
   const [openMenu, setOpenMenu] = useState(false);
   const [openUsers, setOpenUsers] = useState(false);
@@ -45,7 +49,7 @@ const Layout = (props) => {
           {props.children}
         </section>
         {session && <Users openUsers={openUsers} />}
-        {session && <Chat />}
+        {!router.pathname.includes("chat") && session && <Chat />}
       </main>
     </Fragment>
   );

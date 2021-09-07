@@ -49,7 +49,7 @@ const TheMessages = ({ messages }) => {
 
   return (
     <Scroll>
-      <div className="flex-1 flex flex-col w-full px-2 overflow-auto">
+      <div className="row-span-4 flex flex-col w-full px-2 overflow-auto">
         {showMessages()}
         <div ref={scrollUpRef}></div>
       </div>

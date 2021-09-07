@@ -40,7 +40,7 @@ const MessageInput = () => {
   };
 
   return (
-    <form className=" relative flex items-center w-full shadow-sm py-4 px-2 bg-indigo-900 rounded">
+    <form className=" relative flex items-center w-full shadow-sm h-20 px-2 bg-indigo-900 rounded">
       {emojiOpen && (
         <div className="absolute left-2" style={{ top: "-425px" }}>
           <Picker onSelect={(e) => addEmoji(e)} />
@@ -53,7 +53,7 @@ const MessageInput = () => {
         type="text"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
-        className="bg-indigo-800 ml-3 rounded w-full text-black-100"
+        className="bg-indigo-800 ml-3 h-3/4 rounded w-full text-black-100"
       />
       <button disabled={!message} hidden onClick={(e) => sendMessage(e)}>
         Send message

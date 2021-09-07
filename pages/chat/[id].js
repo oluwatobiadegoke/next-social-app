@@ -10,9 +10,11 @@ const ChatMessages = ({ messages, chat }) => {
   const chatWith = getRecipientName(chat.user, session.user.name);
 
   return (
-    <div className="h-screen w-full mt-16">
-      <Messages chatWith={chatWith} messages={messages} />
-    </div>
+    <section>
+      <div className="w-full">
+        <Messages chatWith={chatWith} messages={messages} />
+      </div>
+    </section>
   );
 };
 
