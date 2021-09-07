@@ -1,10 +1,14 @@
 import React, { useRef, useState, useEffect } from "react";
-import { signIn } from "next-auth/client";
+import { signIn, useSession } from "next-auth/client";
 import { useRouter } from "next/router";
 
 import Spinner from "../utils/Spinner";
+import { useGlobalUserContext } from "../../state/userContext/userContext";
 
 const Signin = ({ isSignup, setIsSignup }) => {
+  const [session] = useSession();
+  const { setSessionUser } = useGlobalUserContext();
+
   const [spinner, setSpinner] = useState(false);
   const [isError, setIsError] = useState(false);
   const [message, setMessage] = useState("");
@@ -39,6 +43,7 @@ const Signin = ({ isSignup, setIsSignup }) => {
           setMessage("Couldn't sign you in. Please try again.");
         }
         router.push("/user/home");
+        setSessionUser(session.user);
         setSpinner(false);
       } catch (error) {
         setSpinner(false);
@@ -54,7 +59,7 @@ const Signin = ({ isSignup, setIsSignup }) => {
 
   return (
     <section className="w-full flex justify-center mt-14">
-      <div className="w-3/4 flex flex-col">
+      <div className="w-full md:w-3/4 flex flex-col">
         {isSignup && (
           <div className="bg-green-500 text-white text-sm font-bold py-2 px-4 rounded flex justify-center items-center mb-4">
             <p>

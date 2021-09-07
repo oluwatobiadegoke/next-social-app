@@ -74,7 +74,7 @@ const Signup = ({ setIsMember, setIsSignup }) => {
 
   return (
     <section className="w-full flex justify-center mt-14">
-      <div className="w-3/4 flex flex-col">
+      <div className="w-full md:w-3/4 flex flex-col">
         {isError && (
           <div className="bg-red-500 text-white text-sm font-bold py-2 px-4 rounded flex justify-center items-center mb-4">
             <p>{message}</p>

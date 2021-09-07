@@ -53,3 +53,23 @@ export default NextAuth({
     }),
   ],
 });
+
+// const client = await connectToDatabase();
+// const users = client.db().collection("users");
+// const theuser = await users.findOne({ email: session.user.email });
+// if (theuser) {
+//   const { userId, profilePicture, bio } = theuser;
+//   session.user.userId = userId;
+//   session.user.profilePicture = profilePicture;
+//   session.user.bio = bio;
+// }
+
+// const client = await connectToDatabase();
+// const users = client.db().collection("users");
+// const theuser = await users.findOne({ email: user.email });
+// if (theuser) {
+//   const { userId, profilePicture, bio } = theuser;
+//   token.userId = userId;
+//   token.profilePicture = profilePicture;
+//   token.bio = bio;
+// }

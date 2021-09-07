@@ -13,7 +13,7 @@ export default function Home() {
   };
 
   return (
-    <main className="font-body h-screen w-full overflow-hidden flex bg-test-100">
+    <main className="font-body h-screen w-full flex bg-test-100">
       <section className="flex-1 p-8 bg-white">
         <p className="text-right text-sm font-bold text-indigo-800">
           {isMember ? "Not" : "Already"} a member?{" "}
@@ -30,7 +30,7 @@ export default function Home() {
         </>
       </section>
 
-      <section className="bg-indigo-800 bg-test-100 flex-1 p-8 flex items-center justify-center">
+      <section className="hidden bg-indigo-800 bg-test-100 flex-1 p-8 lg:flex items-center justify-center">
         <p className="text-black-100 font-extrabold text-9xl">X.PRESS</p>
       </section>
     </main>

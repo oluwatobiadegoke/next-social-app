@@ -55,3 +55,7 @@ input[type="file"] {
 .breaker {
   @apply h-3/4 w-w bg-black-300;
 }
+
+.floatingIcons {
+  @apply fixed top-20 h-14 w-14 flex lg:hidden z-50 items-center justify-center rounded-full bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-60 shadow-2xl cursor-pointer;
+}

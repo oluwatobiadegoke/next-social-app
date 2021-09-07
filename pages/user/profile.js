@@ -2,9 +2,12 @@ import { useSession } from "next-auth/client";
 import Image from "next/image";
 
 import ProfileForm from "../../components/Profile/ProfileForm";
+import { useGlobalUserContext } from "../../state/userContext/userContext";
 
 const profile = () => {
   const [session] = useSession();
+
+  const { sessionUser } = useGlobalUserContext();
 
   return (
     <section>

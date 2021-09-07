@@ -4,17 +4,19 @@ import { useSession } from "next-auth/client";
 import { useRouter } from "next/router";
 
 import getRecipientName from "../../utils/getRecipientName";
-// import { db } from "../../../firebase";
 import { useGlobalChatContext } from "../../../state/chatContext/chatContext";
 
 const AllChats = ({ users, id }) => {
   const [session] = useSession();
   const router = useRouter();
 
+  const { loadMessages, setLoadMessages } = useGlobalChatContext();
+
   const chatName = getRecipientName(users, session.user.name);
 
   const handleRoute = () => {
     router.push(`/chat/${id}`);
+    setLoadMessages(!loadMessages);
   };
 
   return (

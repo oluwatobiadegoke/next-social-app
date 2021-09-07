@@ -1,8 +1,14 @@
 import { useRef, useState, useEffect } from "react";
 import { useSession, getSession } from "next-auth/client";
 
+import { useGlobalUserContext } from "../../state/userContext/userContext";
+
 const ProfileForm = () => {
   const [session] = useSession();
+
+  const { sessionUser } = useGlobalUserContext();
+
+  console.log(sessionUser);
 
   const profilePictureRef = useRef();
   const nameRef = useRef();
@@ -123,7 +129,7 @@ const ProfileForm = () => {
         <div className="w-full flex justify-center mt-4">
           <button
             className={`bg-green-800 px-4 py-1 text-white rounded-full ${
-              loading && "bg-green-600 disabled:cursor-not-allowed "
+              loading && "opacity-70 disabled:cursor-not-allowed "
             }`}
             onClick={(e) => handleSubmit(e)}
             disabled={loading ? true : false}
