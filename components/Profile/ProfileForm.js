@@ -1,14 +1,8 @@
 import { useRef, useState, useEffect } from "react";
 import { useSession, getSession } from "next-auth/client";
 
-import { useGlobalUserContext } from "../../state/userContext/userContext";
-
 const ProfileForm = () => {
   const [session] = useSession();
-
-  const { sessionUser } = useGlobalUserContext();
-
-  console.log(sessionUser);
 
   const profilePictureRef = useRef();
   const nameRef = useRef();
@@ -23,7 +17,7 @@ const ProfileForm = () => {
     const timeout = setTimeout(() => {
       setIsError(false);
       setIsMessageAvail(false);
-    }, 3000);
+    }, 5000);
 
     return () => clearTimeout(timeout);
   }, [isError, isMessageAvail]);
@@ -45,10 +39,11 @@ const ProfileForm = () => {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
           if (data.response !== "1") {
             setIsError(true);
-            setMsg("Profile not updated");
+            setMsg(
+              "Profile not updated. As a result of a bug I haven't fixed, you would not be able to see changes until you log in again."
+            );
           } else {
             setIsMessageAvail(true);
             setIsError(false);

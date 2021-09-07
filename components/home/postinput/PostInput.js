@@ -7,7 +7,6 @@ import { db } from "../../../firebase";
 
 const PostInput = ({ setPostUpdated, postUpdated }) => {
   const [session] = useSession();
-  console.log(session.user);
 
   const [spinner, setSpinner] = useState(false);
   const [isMessageAvail, setIsMessageAvail] = useState(false);

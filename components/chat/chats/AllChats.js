@@ -1,6 +1,5 @@
 import { BsChatDots } from "react-icons/bs";
 import { useSession } from "next-auth/client";
-// import { useCollection } from "react-firebase-hooks/firestore";
 import { useRouter } from "next/router";
 
 import getRecipientName from "../../utils/getRecipientName";

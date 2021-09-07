@@ -13,8 +13,6 @@ const Layout = (props) => {
   const [session] = useSession();
   const router = useRouter();
 
-  console.log(router.pathname);
-
   const [openMenu, setOpenMenu] = useState(false);
   const [openUsers, setOpenUsers] = useState(false);
 

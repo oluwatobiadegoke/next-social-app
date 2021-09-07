@@ -2,12 +2,9 @@ import { useSession } from "next-auth/client";
 import Image from "next/image";
 
 import ProfileForm from "../../components/Profile/ProfileForm";
-import { useGlobalUserContext } from "../../state/userContext/userContext";
 
 const profile = () => {
   const [session] = useSession();
-
-  const { sessionUser } = useGlobalUserContext();
 
   return (
     <section>
@@ -31,5 +28,22 @@ const profile = () => {
     </section>
   );
 };
+
+export async function getServerSideProps(context) {
+  const session = await getSession({ req: context.req });
+
+  if (session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: { session },
+  };
+}
 
 export default profile;
