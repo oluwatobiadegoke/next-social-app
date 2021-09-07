@@ -5,7 +5,7 @@ import AllUsers from "./AllUsers";
 import Scroll from "../../utils/Scroll";
 import Spinner from "../../utils/Spinner";
 
-const Users = ({ openUsers }) => {
+const Users = ({ openUsers, setOpenUsers }) => {
   const [users, setUsers] = useState();
 
   const { data: data, error } = useSWR("/api/users");
@@ -52,7 +52,7 @@ const Users = ({ openUsers }) => {
                     </p>
                   </div>
                 ) : (
-                  <AllUsers users={users} />
+                  <AllUsers users={users} setOpenUsers={setOpenUsers} />
                 )}
               </>
             )}

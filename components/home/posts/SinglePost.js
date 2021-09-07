@@ -3,6 +3,7 @@ import { FaComments } from "react-icons/fa";
 import { BiLike } from "react-icons/bi";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useSession } from "next-auth/client";
+import Image from "next/image";
 
 import Comments from "./comment/Comments";
 import { db } from "../../../firebase";
@@ -16,6 +17,7 @@ const SinglePost = ({
   setPostUpdated,
   postUpdated,
   docId,
+  posterPicture,
 }) => {
   const [session] = useSession();
   const user = session.user.userId;
@@ -130,8 +132,12 @@ const SinglePost = ({
   return (
     <div className="shadow-2xl bg-indigo-800 text-black-100 rounded-lg px-4 py-5 my-6 text-sm">
       <div className="bg-indigo-800 flex items-center border-b border-indigo-700 pb-1">
-        <div className="w-10 h-10 rounded-full flex items-center justify-center bg-indigo-700 shadow mr-3">
-          <p>{poster.slice(0, 1).toUpperCase()}</p>
+        <div className="w-10 h-10 rounded-full flex items-center justify-center bg-indigo-700 shadow mr-3 overflow-hidden">
+          {posterPicture === "" || posterPicture === "undefined" ? (
+            <p>{poster.slice(0, 1).toUpperCase()}</p>
+          ) : (
+            <Image src={posterPicture} width={40} height={40} />
+          )}
         </div>
         <p>{poster}</p>
       </div>

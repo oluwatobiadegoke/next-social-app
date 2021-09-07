@@ -2,7 +2,7 @@ import Bio from "./Bio";
 import PageLinks from "./PageLinks";
 import Signout from "./Signout";
 
-const Sidemenu = ({ openMenu }) => {
+const Sidemenu = ({ openMenu, setOpenMenu }) => {
   return (
     <section
       className={`fixed top-16 ${
@@ -12,7 +12,7 @@ const Sidemenu = ({ openMenu }) => {
     >
       <Bio />
       <div className="h-h w-full bg-indigo-700 self-center"></div>
-      <PageLinks />
+      <PageLinks setOpenMenu={setOpenMenu} />
       <Signout />
     </section>
   );

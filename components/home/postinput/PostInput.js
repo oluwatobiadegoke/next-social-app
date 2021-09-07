@@ -7,7 +7,7 @@ import { db } from "../../../firebase";
 
 const PostInput = ({ setPostUpdated, postUpdated }) => {
   const [session] = useSession();
-  // const db = app.firestore();
+  console.log(session.user);
 
   const [spinner, setSpinner] = useState(false);
   const [isMessageAvail, setIsMessageAvail] = useState(false);
@@ -36,6 +36,9 @@ const PostInput = ({ setPostUpdated, postUpdated }) => {
       content: postRef.current.value,
       poster: session?.user?.name,
       userId: session?.user?.userId,
+      userPicture: session?.user?.profilePicture
+        ? session.user.profilePicture
+        : "",
       likes: 0,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     };
@@ -91,7 +94,7 @@ const PostInput = ({ setPostUpdated, postUpdated }) => {
             </button>
           ) : (
             <button
-              className="bg-green-500 text-white px-5 py-1 rounded mt-3 text-base"
+              className="text-green-500 border border-green-500 px-5 py-1 rounded mt-3 text-sm"
               onClick={(e) => handleSubmit(e)}
             >
               Post

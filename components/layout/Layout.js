@@ -40,7 +40,7 @@ const Layout = (props) => {
             <FiUsers className="text-green-500 text-xl" />
           </div>
         )}
-        {session && <Sidemenu openMenu={openMenu} />}
+        {session && <Sidemenu openMenu={openMenu} setOpenMenu={setOpenMenu} />}
         <section
           className={`${
             session ? "col-span-7 lg:col-span-3 my-5" : "col-span-7"
@@ -48,7 +48,7 @@ const Layout = (props) => {
         >
           {props.children}
         </section>
-        {session && <Users openUsers={openUsers} />}
+        {session && <Users openUsers={openUsers} setOpenUsers={setOpenUsers} />}
         {!router.pathname.includes("chat") && session && <Chat />}
       </main>
     </Fragment>

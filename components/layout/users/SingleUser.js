@@ -5,7 +5,7 @@ import { useSession } from "next-auth/client";
 import { db } from "../../../firebase";
 import { useGlobalChatContext } from "../../../state/chatContext/chatContext";
 
-const SingleUser = ({ userId, name }) => {
+const SingleUser = ({ userId, name, setOpenUsers }) => {
   const [session] = useSession();
   const user = session.user.name;
 
@@ -29,6 +29,7 @@ const SingleUser = ({ userId, name }) => {
         user: [user, chatWith],
       });
       setLoadMessages(true);
+      setOpenUsers(false);
     }
   };
 
