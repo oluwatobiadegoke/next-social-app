@@ -21,16 +21,6 @@ const ChatMessages = ({ messages, chat }) => {
 export default ChatMessages;
 
 export async function getServerSideProps(context) {
-  const session = await getSession({ req: context.req });
-
-  if (session) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
   const ref = db.collection("chats").doc(context.params.id);
 
   const mesResponse = await ref
@@ -58,7 +48,6 @@ export async function getServerSideProps(context) {
 
   return {
     props: {
-      session,
       messages: JSON.stringify(messages),
       chat,
     },
