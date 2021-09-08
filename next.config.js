@@ -42,6 +42,12 @@ module.exports = (phase) => {
     },
 
     env: {
+      //mongodb env variables
+      mongodb_username: "tobi123",
+      mongodb_password: "WhTAyo2vJjU2MHaY",
+      mongodb_clustername: "cluster0",
+      mongodb_database: "xpress",
+
       //cloudinary environment variables
 
       cloudinary_cloud_name: "theoluwatobi",
