@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { FcGoogle } from "react-icons/fc";
-import { signIn } from "next-auth/client";
 
 import Spinner from "../utils/Spinner";
 
@@ -165,21 +163,6 @@ const Signup = ({ setIsMember, setIsSignup }) => {
           <div className="bg-black-100 h-h w-full"></div>
           <p className="text-center mx-4 my-1 text-black-100">or</p>
           <div className="bg-black-100 h-h w-full"></div>
-        </div>
-        <div className="w-full">
-          <button
-            onClick={() =>
-              signIn("google", {
-                callbackUrl: "http://localhost:3000/api/auth/callback/google",
-              })
-            }
-            className="flex items-center justify-center border border-solid border-black-100 rounded px-5 py-3 m-auto"
-          >
-            <FcGoogle />
-            <span className="ml-2 text-xs font-extrabold text-black-200">
-              Sign up with Google
-            </span>
-          </button>
         </div>
       </div>
     </section>

@@ -2,7 +2,11 @@ import { connectToDatabase } from "../../helpers/database";
 import { v2 as cloudinary } from "cloudinary";
 import formidable from "formidable";
 
-import { cloudinaryConfig } from "../../cloudinaryConfig";
+const cloudinaryConfig = {
+  cloud_name: process.env.cloudinary_cloud_name,
+  api_key: process.env.cloudinary_api_key,
+  api_secret: process.env.cloudinary_api_secret,
+};
 
 cloudinary.config(cloudinaryConfig);
 
