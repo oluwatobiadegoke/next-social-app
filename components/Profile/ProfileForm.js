@@ -53,7 +53,6 @@ const ProfileForm = () => {
           setLoading(false);
         });
     } catch (error) {
-      console.log(error);
       setIsError(true);
       setMsg("Profile not updated");
       setLoading(false);

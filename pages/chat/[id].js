@@ -1,5 +1,6 @@
 import { useSession } from "next-auth/client";
 
+import Layout from "../../components/layout/Layout";
 import Messages from "../../components/chat/indMessages/Messages";
 import { db } from "../../firebase";
 import getRecipientName from "../../components/utils/getRecipientName";
@@ -10,11 +11,13 @@ const ChatMessages = ({ messages, chat }) => {
   const chatWith = getRecipientName(chat.user, session.user.name);
 
   return (
-    <section>
-      <div className="w-full">
-        <Messages chatWith={chatWith} messages={messages} />
-      </div>
-    </section>
+    <Layout>
+      <section>
+        <div className="w-full">
+          <Messages chatWith={chatWith} messages={messages} />
+        </div>
+      </section>
+    </Layout>
   );
 };
 
